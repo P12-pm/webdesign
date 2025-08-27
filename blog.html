@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Web and digital design — baunfire</title>
+  <meta name="description" content="A modern, responsive article layout with smooth navigation, sticky TOC, and subtle animations — built for performance and branded content." />
+  <meta name="theme-color" content="#0b0d12" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+  <style>
+    /* ----------- Modern CSS Reset ----------- */
+    *,*::before,*::after { box-sizing: border-box; }
+    * { margin: 0; }
+    html:focus-within { scroll-behavior: smooth; }
+    html, body { height: 100%; }
+    body { line-height: 1.5; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+    img, picture, video, canvas, svg { display: block; max-width: 100%; }
+    input, button, textarea, select { font: inherit; }
+    p, h1, h2, h3, h4, h5, h6 { overflow-wrap: anywhere; }
+    :target { scroll-margin-top: 9rem; }
+
+    /* ----------- Theme Tokens ----------- */
+    :root {
+      --brand: #6b7cff;         /* Primary brand color */
+      --brand-2: #a68cff;       /* Accent gradient end */
+      --bg: #0b0d12;            /* Page background */
+      --bg-elev: #10141c;       /* Elevated surfaces */
+      --text: #e6e9ef;          /* Primary text */
+      --muted: #a2a9b6;         /* Muted text */
+      --line: #1e2532;          /* Subtle borders */
+      --ok: #2ecc71;
+      --warn: #f7b500;
+
+      --radius: 14px;
+      --shadow-1: 0 10px 30px rgba(0,0,0,.25);
+      --shadow-2: 0 20px 60px rgba(0,0,0,.35);
+
+      --container: 1200px;
+      --content: 780px;
+
+      --step--1: clamp(0.78rem, 0.76rem + 0.1vw, 0.9rem);
+      --step-0: clamp(0.95rem, 0.9rem + 0.3vw, 1.05rem);
+      --step-1: clamp(1.1rem, 1.05rem + 0.4vw, 1.25rem);
+      --step-2: clamp(1.35rem, 1.2rem + 0.8vw, 1.6rem);
+      --step-3: clamp(1.6rem, 1.35rem + 1.5vw, 2.2rem);
+      --step-4: clamp(2.1rem, 1.6rem + 2.5vw, 3rem);
+      --step-5: clamp(3rem, 2rem + 4vw, 4.2rem);
+
+      /* Scroll progress (updated by tiny JS) */
+      --scroll-progress: 0;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #ffffff;
+        --bg-elev: #f7f9fc;
+        --text: #0c1222;
+        --muted: #586177;
+        --line: #e6eaf2;
+      }
+    }
+
+    body {
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      font-size: var(--step-0);
+      color: var(--text);
+      background: radial-gradient(1200px 600px at 80% -10%, rgba(107,124,255,.22), transparent 60%),
+                  radial-gradient(900px 500px at -10% -10%, rgba(166,140,255,.18), transparent 60%),
+                  var(--bg);
+    }
+
+    /* ----------- Top Reading Progress ----------- */
+    .reading-progress {
+      position: fixed;
+      inset: 0 0 auto 0;
+      height: 3px;
+      z-index: 9999;
+      background: linear-gradient(90deg, var(--brand), var(--brand-2));
+      transform-origin: left center;
+      transform: scaleX(calc(var(--scroll-progress) / 100));
+      box-shadow: 0 1px 0 rgba(0,0,0,.12);
+      will-change: transform;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reading-progress { transition: none; }
+    }
+
+    /* ----------- Header / Nav ----------- */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      backdrop-filter: saturate(1.2) blur(10px);
+      background: color-mix(in oklab, var(--bg), transparent 35%);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 1rem 1.2rem;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 1rem;
+      align-items: center;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: .65rem;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 800;
+      letter-spacing: .2px;
+    }
+    .brand .logo {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      box-shadow: var(--shadow-1);
+    }
+    .nav-links {
+      display: flex; gap: 1.2rem; align-items: center; justify-content: center;
+    }
+    .nav-links a {
+      text-decoration: none; color: var(--muted); font-weight: 600;
+      padding: .4rem .6rem; border-radius: 8px;
+    }
+    .nav-links a:hover { color: var(--text); background: color-mix(in oklab, var(--line), transparent 70%); }
+    .nav-cta {
+      display: flex; justify-content: end;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .6rem .95rem;
+      color: #fff; text-decoration: none; font-weight: 700;
+      background: linear-gradient(135deg, var(--brand), var(--brand-2));
+      border-radius: 999px;
+      box-shadow: var(--shadow-1);
+    }
+    .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-2); }
+    .btn-ghost {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--line);
+      box-shadow: none;
+    }
+    .btn-ghost:hover { background: color-mix(in oklab, var(--line), transparent 70%); }
+
+    /* Mobile menu (CSS-only) */
+    #menu-toggle { display: none; }
+    .menu-btn { display: none; justify-self: start; }
+    .menu-btn button { all: unset; cursor: pointer; padding: .5rem; border-radius: 8px; }
+    .menu-btn button:hover { background: color-mix(in oklab, var(--line), transparent 70%); }
+    @media (max-width: 940px) {
+      .nav { grid-template-columns: auto auto auto; }
+      .nav-links {
+        display: none;
+        position: fixed; inset: 64px 1rem auto 1rem;
+        background: var(--bg-elev); border: 1px solid var(--line);
+        border-radius: var(--radius);
+        padding: .8rem; flex-direction: column; gap: .2rem;
+        box-shadow: var(--shadow-2);
+      }
+      #menu-toggle:checked ~ .nav-links { display: flex; }
+      .menu-btn { display: flex; }
+      .nav-cta { display: none; }
+    }
+
+    /* ----------- Hero ----------- */
+    .hero {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 4.2rem 1.2rem 2.2rem;
+    }
+    .breadcrumb {
+      display: flex; gap: .6rem; align-items: center; color: var(--muted);
+      font-weight: 600; font-size: var(--step--1);
+    }
+    .breadcrumb a { color: inherit; text-decoration: none; }
+    .badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .28rem .6rem;
+      border: 1px solid var(--line);
+      border-radius: 999px; color: var(--muted);
+      font-size: var(--step--1); font-weight: 700;
+      background: color-mix(in oklab, var(--line), transparent 70%);
+    }
+    .hero-grid {
+      display: grid; grid-template-columns: 1fr; gap: 1.6rem; margin-top: 1rem;
+    }
+    .hero h1 {
+      font-family: "DM Serif Display", ui-serif, Georgia, serif;
+      font-size: var(--step-5);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+    .lead {
+      color: var(--muted); font-size: var(--step-1); max-width: 60ch;
+    }
+    .meta {
+      display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 1rem 0;
+    }
+    .author {
+      display: inline-flex; align-items: center; gap: .7rem;
+      color: var(--muted); font-weight: 600;
+    }
+    .author img {
+      width: 36px; height: 36px; border-radius: 50%; object-fit: cover;
+      box-shadow: var(--shadow-1);
+    }
+    .meta .dot { width: 4px; height: 4px; background: var(--muted); border-radius: 50%; }
+    .share { margin-left: auto; display: inline-flex; gap: .35rem; }
+    .icon-btn {
+      --size: 36px;
+      width: var(--size); height: var(--size);
+      display: inline-grid; place-items: center;
+      border-radius: 10px; border: 1px solid var(--line);
+      background: color-mix(in oklab, var(--line), transparent 70%);
+      color: var(--text);
+      text-decoration: none;
+    }
+    .icon-btn:hover { background: color-mix(in oklab, var(--line), transparent 60%); }
+
+    /* ----------- Layout ----------- */
+    .layout {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: 1rem 1.2rem 5rem;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 2rem;
+    }
+    @media (min-width: 1100px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr) minmax(300px, 340px);
+        align-items: start;
+      }
+    }
+    .article {
+      max-width: var(--content);
+      content-visibility: auto;
+      contain: content;
+    }
+    .article p { margin: 1rem 0; font-size: var(--step-0); color: var(--text); }
+    .article h2 {
+      font-size: var(--step-3); margin: 2.2rem 0 0.8rem;
+      font-family: "DM Serif Display", ui-serif, Georgia, serif;
+      letter-spacing: -0.01em;
+    }
+    .article h3 { font-size: var(--step-2); margin: 1.6rem 0 .6rem; }
+    .article blockquote {
+      margin: 1.6rem 0; padding: 1.1rem 1.2rem;
+      border-left: 4px solid var(--brand);
+      background: color-mix(in oklab, var(--line), transparent 70%);
+      color: var(--text);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: var(--step-1);
+    }
+    .figure {
+      margin: 1.8rem 0; border: 1px solid var(--line); border-radius: var(--radius);
+      overflow: clip; background: var(--bg-elev); box-shadow: var(--shadow-1);
+    }
+    .figure img { width: 100%; height: auto; display: block; }
+    .figure figcaption {
+      font-size: var(--step--1); color: var(--muted);
+      padding: .7rem .9rem; border-top: 1px solid var(--line);
+      display: flex; justify-content: space-between; gap: .8rem; flex-wrap: wrap;
+    }
+
+    /* Sticky TOC */
+    .toc {
+      position: sticky; top: 96px;
+      border: 1px solid var(--line);
+      background: var(--bg-elev);
+      border-radius: var(--radius);
+      padding: 1rem;
+      box-shadow: var(--shadow-1);
+    }
+    .toc h4 { font-size: var(--step-0); margin-bottom: .4rem; }
+    .toc ol { list-style: none; padding: 0; margin: 0; display: grid; gap: .2rem; }
+    .toc a {
+      display: block; padding: .5rem .6rem; border-radius: 8px;
+      color: var(--muted); text-decoration: none; font-weight: 600;
+    }
+    .toc a:hover, .toc a[aria-current="true"] { background: color-mix(in oklab, var(--line), transparent 65%); color: var(--text); }
+
+    /* CTA Banner */
+    .cta {
+      margin: 3rem 0;
+      padding: 2rem;
+      border-radius: calc(var(--radius) + 6px);
+      background: linear-gradient(135deg, color-mix(in oklab, var(--brand), transparent 10%), color-mix(in oklab, var(--brand-2), transparent 12%));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-2);
+    }
+    .cta h3 { font-size: var(--step-3); margin-bottom: .4rem; }
+    .cta p { color: var(--text); opacity: .9; }
+    .cta .actions { margin-top: 1rem; display: flex; gap: .6rem; flex-wrap: wrap; }
+
+    /* Related grid */
+    .related {
+      margin-top: 2.5rem;
+    }
+    .grid {
+      margin-top: 1rem;
+      display: grid; gap: 1rem;
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+    @media (min-width: 740px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1120px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+    .card {
+      display: grid; gap: .75rem; border: 1px solid var(--line);
+      border-radius: var(--radius); padding: .9rem; background: var(--bg-elev);
+      box-shadow: var(--shadow-1);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-2); }
+    .card img { border-radius: 10px; aspect-ratio: 16/9; object-fit: cover; }
+    .card h4 { font-size: var(--step-1); }
+    .card p { color: var(--muted); font-size: var(--step--1); }
+
+    /* Footer */
+    .site-footer {
+      border-top: 1px solid var(--line);
+      background: color-mix(in oklab, var(--bg), #000 4%);
+      margin-top: 3rem;
+    }
+    .footer-inner {
+      max-width: var(--container);
+      margin: 0 auto; padding: 2.2rem 1.2rem 3rem;
+      display: grid; gap: 1.2rem;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 900px) {
+      .footer-inner { grid-template-columns: 2fr 1fr 1fr; align-items: start; }
+    }
+    .footer-brand p { color: var(--muted); max-width: 48ch; }
+    .footer-col h5 { font-size: var(--step-0); margin-bottom: .4rem; }
+    .footer-col a { display: block; text-decoration: none; color: var(--muted); padding: .3rem 0; }
+    .footer-col a:hover { color: var(--text); }
+
+    /* ----------- Animations ----------- */
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      animation: fade-up .7s ease both;
+      animation-delay: .02s;
+      /* Scroll-driven when supported */
+      animation-timeline: view();
+      animation-range: entry 10% cover 30%;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { animation: none; opacity: 1; }
+      .btn:hover, .card:hover { transform: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="reading-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <nav class="nav" aria-label="Main">
+      <a href="index.html" class="brand">
+        <span>BAUNFIRE</span>
+      </a>
+
+      <label class="menu-btn" for="menu-toggle">
+        <button aria-label="Toggle menu">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </label>
+      <input type="checkbox" id="menu-toggle" hidden>
+
+      <div class="nav-links" role="navigation">
+        <a href="work.html">Work</a>
+        <a href="services.html">Services</a>
+        <a href="about.html">About</a>
+        <a href="blog1.html" aria-current="page">Blog</a>
+        <a href="letstalk.html">Contact</a>
+      </div>
+
+      <div class="nav-cta">
+        <a class="btn" href="#">Start a project</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="#">WEB & DIGITAL DESIGN</a>
+      </nav>
+
+      <div class="hero-grid">
+        <div class="reveal">
+          <h1>Building a Thriving Partnership with Your Digital Agency</h1>
+        </div>
+
+        <div class="meta reveal" role="group" aria-label="Article meta">
+          <span class="author">
+            <img alt="" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&h=200&fit=crop&auto=format" loading="lazy" decoding="async" />
+          </span>
+          <div class="share" aria-label="Share">
+            <a class="icon-btn" href="#" aria-label="Share on X">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2H21l-6.531 7.46L22 22h-6.844l-4.78-6.266L4.9 22H2.14l6.99-7.985L2 2h6.93l4.31 5.822L18.245 2h-.001Zm-2.4 18h1.9L8.24 4h-1.9L15.844 20Z"/></svg>
+            </a>
+            <a class="icon-btn" href="#" aria-label="Share on LinkedIn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.94 6.54a2.44 2.44 0 1 1 0-4.88 2.44 2.44 0 0 1 0 4.88ZM2.9 21.9V7.8h8.08v14.1H2.9ZM21.1 21.9h-8.07V7.8h7.75v2.44c1.13-2.08 6.17-2.66 6.17 4.87v6.8h-5.85v-6.05c0-2.63-1.11-3.05-2.04-3.05-1.48 0-2.96 1.1-2.96 3.2v5.9Z"/></svg>
+            </a>
+            <a class="icon-btn" href="#" aria-label="Copy link">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 7h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2Zm-1-4h10a2 2 0 0 1 2 2v1H6V5a2 2 0 0 1 1-2Z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="layout">
+      <article class="article" id="article">
+        <figure class="figure reveal">
+          <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=1600&auto=format&fit=crop" alt="Team collaborating around laptops at a large table" width="1600" height="900" loading="lazy" decoding="async">
+        </figure>
+
+        <h2 id="setup" class="reveal">A thriving partnership with your digital agency is built on trust, creativity, and measurable results. Discover how transparent communication, high quality work, and shared goals unlock long term business growth.</h2>
+        <p class="reveal">The most successful digital agency partnerships do not happen by chance. They are intentionally cultivated through alignment, collaboration, and a shared commitment to growth. When your agency understands your vision and invests in your success, the work produced is not only effective but transformative. With clarity in communication, excellence in execution, and a relentless focus on results, the relationship becomes more than a vendor agreement. It becomes a partnership that drives long term impact for your brand and business</p><br><br>
+        <p class="reveal">Partnerships with digital agencies thrive when trust and accountability are prioritized. By combining transparent communication, exceptional output, and a customer first mindset, companies can unlock the full potential of their agency relationships.</p>
+        
+
+        <h3>The Power of Transparent Communication</h3>
+        <p class="reveal">Every strong relationship begins with clear communication. In the context of a digital agency partnership, transparency ensures alignment at every stage of a project. From setting expectations to discussing timelines, it establishes trust and eliminates uncertainty. When both sides share openly about challenges, priorities, and outcomes, the partnership becomes grounded in honesty. This approach creates a safe environment for innovative ideas, candid feedback, and solutions that benefit the work and the relationship alike.        </p>
+        <p class="reveal">Open communication also prevents wasted time and misaligned resources. Instead of course correcting late in a project, issues can be addressed quickly and constructively. For clients, this transparency creates confidence in the process and clarity on where investments are going. For agencies, it fosters collaboration that leads to stronger creative output. When communication is treated as a shared responsibility, both sides feel informed and empowered, building momentum toward achieving business goals together.</p>
+
+        <h3>Delivering Consistent High Quality Work</h3>
+        <p class="reveal">High quality output is the cornerstone of any thriving digital partnership. Businesses turn to agencies for expertise, fresh ideas, and technical execution that elevate their brand. When an agency consistently delivers work that exceeds expectations, trust deepens and opportunities expand. Quality shows up not only in the final product but also in the process, from thoughtful strategy to refined design and precise development. The result is work that resonates with audiences and strengthens the reputation of both the client and the agency.</p>
+        <p class="reveal">Consistency is equally important. A single standout project is not enough to sustain a long term relationship. Clients value agencies that bring rigor and creativity to every engagement. By maintaining a high standard across campaigns, websites, and digital experiences, agencies prove they can be relied on as strategic partners. This consistency reassures clients that the agency can adapt to evolving business needs without compromising quality. Over time, the impact of reliable excellence compounds into lasting success.</p>
+        
+        <h3>Service and Results That Drive Growth        </h3>
+        <p class="reveal">Exceptional customer service is more than being responsive. It is about anticipating needs, supporting decisions, and guiding clients through complex digital challenges. When agencies approach service as a relationship rather than a transaction, clients feel valued and supported at every step. This level of attention creates loyalty and positions the agency as an extension of the client’s team. A service mindset that prioritizes listening, problem solving, and proactive care makes the difference between a good partnership and a great one.</p>
+        <p class="reveal">Results complete the picture. Transparent communication and high quality work must translate into measurable outcomes that support business objectives. Whether the goal is brand visibility, lead generation, or digital transformation, agencies must show how their work impacts growth. A results driven mindset creates accountability and keeps the partnership focused on what matters most. When service and results align, the relationship thrives, and both sides achieve more than they could alone.</p>
+
+        <h3>Partnerships That Drive Lasting Impact</h3>
+        <p class="reveal">A thriving relationship with your digital agency is not just about completing projects. It is about creating an environment where ideas can flourish, goals are aligned, and outcomes are meaningful. Transparent communication lays the foundation for trust. High quality work builds confidence and demonstrates expertise. Exceptional service strengthens bonds by showing that the client’s success is always at the center. A results driven mindset ensures that the energy invested in collaboration leads to measurable progress.</p>
+        <p class="reveal">Together, these qualities form the backbone of a partnership that elevates brands and accelerates growth. At Baunfire, we approach every engagement with this philosophy. We work closely with our clients to bring clarity to the process, deliver excellence in execution, and stay focused on results that matter. If you are ready to build a strong, high value partnership for your next brand, digital, or web project, connect with Baunfire to start the conversation. Together, we can shape digital experiences that create lasting impact and drive sustainable growth.        </p>
+    
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="brand"><span class="logo" aria-hidden="true"></span><span>BAUNFIRE</span></a>
+        <p></p>
+      </div>
+      <div class="footer-col">
+        <h5>EXPLORE</h5>
+        <a href="about.html">About</a>
+        <a href="careers.html">Careers</a>
+        <a href="blog.html">Blog</a>
+        <a href="letstalk.html">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Optional progressive enhancement: reading progress + TOC highlight + copy link
+    (function () {
+      const doc = document.documentElement;
+      const progressEl = document.querySelector('.reading-progress');
+      const tocLinks = Array.from(document.querySelectorAll('.toc a'));
+
+      function updateProgress() {
+        const scrollTop = doc.scrollTop || document.body.scrollTop;
+        const height = (doc.scrollHeight - doc.clientHeight);
+        const p = Math.max(0, Math.min(100, (scrollTop / height) * 100));
+        doc.style.setProperty('--scroll-progress', p.toFixed(2));
+      }
+      updateProgress();
+      document.addEventListener('scroll', updateProgress, { passive: true });
+      window.addEventListener('resize', updateProgress);
+
+      // TOC highlight
+      const sections = tocLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            tocLinks.forEach(a => a.removeAttribute('aria-current'));
+            const id = '#' + entry.target.id;
+            const active = tocLinks.find(a => a.getAttribute('href') === id);
+            if (active) active.setAttribute('aria-current', 'true');
+          }
+        });
+      }, { rootMargin: '0px 0px -70% 0px', threshold: 0.1 });
+      sections.forEach(s => observer.observe(s));
+
+      // Copy link button
+      const copyBtn = document.querySelector('.share a[aria-label="Copy link"]');
+      if (copyBtn && navigator.clipboard) {
+        copyBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          navigator.clipboard.writeText(location.href).then(() => {
+            copyBtn.title = 'Link copied!';
+            copyBtn.style.outline = '2px solid var(--ok)';
+            setTimeout(() => { copyBtn.style.outline = ''; copyBtn.removeAttribute('title'); }, 1200);
+          });
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

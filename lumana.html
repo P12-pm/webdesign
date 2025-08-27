@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title> Lumana-Baunfire</title>
+  <meta name="theme-color" content="#0b0b0f" />
+
+  <style>
+    :root{
+      --bg:#0b0b0f;
+      --surface:#111118;
+      --surface-2:#161621;
+      --text:#f2f3f6;
+      --muted:#a8adbd;
+      --accent:#82ffd2;
+      --accent-2:#6f7dff;
+      --danger:#ff6b6b;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 14px;
+      --header-height: 72px; /* updated by JS */
+      --container: clamp(1040px, 82vw, 1240px);
+    }
+    *{box-sizing:border-box}
+    html{
+      color-scheme: dark;
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+      text-rendering: optimizeLegibility;
+    }
+    body{
+      margin:0;
+      background: radial-gradient(1200px 800px at 80% -10%, rgba(111,125,255,.18), transparent 50%),
+                  radial-gradient(900px 600px at -10% 20%, rgba(130,255,210,.12), transparent 50%),
+                  var(--bg);
+      color:var(--text);
+      font-family: ui-sans-serif, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji;
+      line-height:1.45;
+    }
+    img,video{max-width:100%; height:auto; display:block}
+    a{color:inherit; text-decoration:none}
+    .container{max-width:var(--container); margin:0 auto; padding:0 24px}
+    .skip-to-content{
+      position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;
+    }
+    .skip-to-content:focus{
+      left:16px; top:16px; width:auto; height:auto; z-index:9999; padding:10px 14px;
+      background:var(--surface); border-radius:8px; outline:2px solid var(--accent);
+    }
+
+    /* Header */
+    .site-header{
+      position:sticky; top:0; z-index:1000;
+      backdrop-filter:saturate(140%) blur(10px);
+      background:linear-gradient(to bottom, rgba(11,11,15,.85), rgba(11,11,15,.6));
+      border-bottom:1px solid rgba(255,255,255,.06);
+      transition: box-shadow .3s ease, background .3s ease, border-color .3s ease;
+    }
+    .site-header.scrolled{ box-shadow: var(--shadow); background: rgba(11,11,15,.9) }
+    .nav{
+      height:var(--header-height);
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; min-width:0;
+    }
+    .brand img{
+      width:36px; height:36px; object-fit:contain; border-radius:8px;
+      background:linear-gradient(135deg, rgba(130,255,210,.2), rgba(111,125,255,.2));
+    }
+    .brand .name{
+      font-weight:800; letter-spacing:.2px;
+      font-size: clamp(16px, 2vw, 18px);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .nav-links{
+      display:flex; align-items:center; gap:24px;
+    }
+    .nav-links a{
+      color:var(--muted); font-weight:600; font-size:14px; letter-spacing:.2px;
+      padding:10px 6px; border-radius:8px; position:relative;
+    }
+    .nav-links a:hover{ color:var(--text) }
+    .nav-links a.active{
+      color:var(--text);
+    }
+    .nav-links a.active::after{
+      content:""; position:absolute; left:0; right:0; bottom:-6px; height:2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      border-radius:2px;
+    }
+    .cta{
+      padding:10px 14px; border-radius:999px; font-weight:700; font-size:14px;
+      color:#0b0b0f; background:linear-gradient(135deg, var(--accent), var(--accent-2));
+      border:none; cursor:pointer;
+    }
+    /* Mobile menu */
+    .menu-toggle{
+      display:none; width:42px; height:42px; border-radius:10px;
+      border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.04);
+      color:var(--text); cursor:pointer;
+    }
+    @media (max-width: 900px){
+      .nav-links{ display:none }
+      .menu-toggle{ display:inline-flex; align-items:center; justify-content:center }
+      .mobile-drawer{
+        position: fixed; inset: 72px 12px 12px 12px; z-index:999;
+        background: linear-gradient(180deg, rgba(17,17,24,.98), rgba(17,17,24,.94));
+        border: 1px solid rgba(255,255,255,.08); border-radius:16px; padding:18px;
+        display:none; flex-direction:column; gap:8px;
+        box-shadow: var(--shadow);
+      }
+      .mobile-drawer.open{ display:flex }
+      .mobile-drawer a{
+        padding:14px 10px; border-radius:10px; color:var(--muted); font-weight:700;
+      }
+      .mobile-drawer a:hover{ background:rgba(255,255,255,.04); color:var(--text) }
+    }
+
+    /* Sections */
+    section{ padding: clamp(56px, 10vw, 120px) 0; scroll-margin-top: calc(var(--header-height) + 16px); content-visibility: auto; contain-intrinsic-size: 0 600px; }
+    .eyebrow{
+      display:inline-flex; align-items:center; gap:8px; font-size:12px; letter-spacing:.24em;
+      text-transform:uppercase; color:var(--muted); font-weight:800; margin-bottom:16px;
+    }
+    .eyebrow::before{
+      content:""; width:28px; height:2px; background: linear-gradient(90deg, var(--accent), transparent);
+      border-radius:2px;
+    }
+
+    /* Hero */
+    .hero{
+      position:relative; overflow:hidden;
+    }
+    .hero .container{ display:grid; grid-template-columns:1.2fr .8fr; gap:clamp(24px, 4vw, 48px); align-items:center }
+    @media (max-width: 900px){ .hero .container{ grid-template-columns:1fr } }
+    .headline{
+      font-weight:900; line-height:1.05;
+      font-size: clamp(32px, 7.5vw, 76px);
+      letter-spacing:-.02em;
+      margin:0 0 16px;
+      background: linear-gradient(135deg, #fff, #cfd6ff 40%, #d4fff0 80%);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .subhead{ color:var(--muted); font-size: clamp(16px, 1.6vw, 20px); max-width: 60ch }
+    .hero-cta{ display:flex; align-items:center; gap:12px; margin-top:24px; flex-wrap:wrap }
+    .ghost{
+      padding:10px 14px; border-radius:999px; font-weight:700; font-size:14px;
+      color:var(--text); background:transparent; border:1px solid rgba(255,255,255,.18);
+      cursor:pointer;
+    }
+    .hero-visual{
+      position:relative; aspect-ratio: 4/3; border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(130,255,210,.12), rgba(111,125,255,.12));
+      border:1px solid rgba(255,255,255,.08);
+      overflow:hidden;
+    }
+    .orb{
+      position:absolute; inset:-20% -20% auto auto; width:70%; height:140%;
+      background: radial-gradient(closest-side, rgba(111,125,255,.28), transparent 70%);
+      filter: blur(28px); transform: translate3d(0,0,0);
+      pointer-events:none;
+      animation: float 12s ease-in-out infinite alternate;
+    }
+    @keyframes float{
+      0%{ transform: translate(0,0) }
+      100%{ transform: translate(-5%, 4%) }
+    }
+    .hero-video{
+      position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.9;
+    }
+
+    /* Intro */
+    .intro .content{
+      display:grid; grid-template-columns: .8fr 1.2fr; gap: clamp(24px, 4vw, 48px);
+    }
+    @media (max-width: 900px){ .intro .content{ grid-template-columns: 1fr } }
+    .kpi{
+      display:grid; grid-template-columns: repeat(3, minmax(120px, 1fr)); gap:16px; margin-top:24px;
+    }
+    .kpi .card{
+      background:var(--surface); border:1px solid rgba(255,255,255,.06); border-radius:12px; padding:16px;
+    }
+    .kpi .value{ font-weight:900; font-size: clamp(22px, 4.2vw, 40px) }
+    .kpi .label{ color:var(--muted); font-size:12px; letter-spacing:.08em; text-transform:uppercase }
+
+    /* Services / Products */
+    .grid{
+      display:grid; gap:16px;
+      grid-template-columns: repeat(12, 1fr);
+    }
+    .card{
+      background:linear-gradient(180deg, rgba(22,22,33,.9), rgba(16,16,24,.9));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:16px; padding:22px;
+      transition: transform .24s ease, border-color .24s ease, background .24s ease;
+    }
+    .card:hover{ transform: translateY(-4px); border-color: rgba(255,255,255,.16) }
+    .services .card{ grid-column: span 4; min-height: 220px; display:flex; flex-direction:column; justify-content:space-between }
+    @media (max-width: 1100px){ .services .card{ grid-column: span 6 } }
+    @media (max-width: 720px){ .services .card{ grid-column: span 12 } }
+    .chip{
+      display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:700;
+      padding:8px 10px; border-radius:999px; color:#0b0b0f;
+      background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    }
+    .card h3{ margin:12px 0 8px }
+    .card p{ margin:0; color:var(--muted) }
+    .card .arrow{
+      width:38px; height:38px; border-radius:10px; display:inline-flex; align-items:center; justify-content:center;
+      border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.04)
+    }
+
+    /* Featured work (or product highlights) */
+    .work .item{
+      grid-column: span 6; overflow:hidden; padding:0; display:flex; flex-direction:column;
+    }
+    @media (max-width: 900px){ .work .item{ grid-column: span 12 } }
+    .thumb{
+      position:relative; overflow:hidden; border-radius: 16px 16px 0 0; aspect-ratio: 16/9;
+      background:linear-gradient(135deg, rgba(130,255,210,.1), rgba(111,125,255,.12));
+    }
+    .thumb img{ width:100%; height:100%; object-fit:cover; filter:saturate(1.05) contrast(1.05) }
+    .item .body{ padding:18px 18px 22px }
+    .tag{ color:var(--muted); font-size:12px; letter-spacing:.08em; text-transform:uppercase }
+    .title{ font-weight:800; font-size: clamp(18px, 2.4vw, 24px); margin:6px 0 0 }
+
+    /* Video section */
+    .video .player{
+      position:relative; border-radius:16px; overflow:hidden;
+      border:1px solid rgba(255,255,255,.08); background:var(--surface);
+    }
+    .video .player .overlay{
+      position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+      background:linear-gradient(180deg, rgba(11,11,15,.0), rgba(11,11,15,.3));
+      pointer-events:none;
+    }
+    .video .player .badge{
+      position:absolute; top:12px; left:12px; z-index:1;
+      padding:8px 10px; border-radius:10px; background:rgba(255,255,255,.08); font-size:12px; font-weight:700;
+      backdrop-filter: blur(6px);
+    }
+
+    /* Contact */
+    .contact .cols{
+      display:grid; grid-template-columns: .9fr 1.1fr; gap:24px;
+    }
+    @media (max-width: 900px){ .contact .cols{ grid-template-columns:1fr } }
+    .contact .details{
+      background:var(--surface); border:1px solid rgba(255,255,255,.08);
+      border-radius:16px; padding:18px;
+    }
+    .stack{ display:flex; flex-direction:column; gap:12px; }
+    .stack a{ color:var(--text) }
+    .contact form{
+      background:var(--surface); border:1px solid rgba(255,255,255,.08);
+      border-radius:16px; padding:18px; display:grid; grid-template-columns:1fr 1fr; gap:12px;
+    }
+    .contact form .full{ grid-column:1 / -1 }
+    label{ font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted) }
+    input, textarea{
+      margin-top:6px; width:100%; padding:12px 12px; border-radius:10px;
+      border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.03); color:var(--text);
+      font-size:14px;
+    }
+    textarea{ min-height:120px; resize:vertical }
+    .note{ color:var(--muted); font-size:12px }
+    .form-actions{ display:flex; justify-content:flex-end; gap:12px; }
+    .success{ color:#86f3c0; display:none }
+    .error{ color:var(--danger); display:none }
+
+    /* Footer */
+    footer{
+      padding:32px 0 56px; color:var(--muted);
+    }
+    .footer-inner{
+      display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+      border-top:1px solid rgba(255,255,255,.06); padding-top:18px;
+    }
+
+    /* Scroll reveal */
+    .reveal{ opacity:0; transform: translateY(16px); transition: opacity .7s ease, transform .7s ease; will-change:transform, opacity }
+    .reveal.in{ opacity:1; transform: none }
+
+    /* Back to top */
+    .to-top{
+      position:fixed; right:16px; bottom:16px; z-index:999; opacity:0; transform: translateY(10px);
+      pointer-events:none; transition: opacity .25s ease, transform .25s ease;
+      border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.05); color:var(--text);
+      width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center;
+    }
+    .to-top.show{ opacity:1; transform:none; pointer-events:auto }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration: 0.001ms !important; scroll-behavior:auto !important }
+    }
+
+  </style>
+</head>
+<body>
+
+  <header class="site-header" id="site-header" role="banner" aria-label="Site header">
+    <div class="container nav">
+      <div class="brand">
+        <div class="name"><a href="index.html">BAUNFIRE</a></div>
+      </div>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="work.html">Work</a>
+        <a href="services.html">Services</a>
+        <a href="letstalk.html">Contact</a>
+        <button class="cta" onclick="document.querySelector('#contact').scrollIntoView({behavior:'smooth'})">Get in touch</button>
+      </nav>
+      <button class="menu-toggle" aria-label="Open menu" aria-controls="mobile-drawer" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section id="hero" class="hero">
+      <div class="container">
+        <div class="copy">
+          <span class="eyebrow"> CASE STUDY</span>
+          <h1 class="headline reveal">
+            Lumana
+          </h1>
+          <span>SERVICES</span>
+          <p class="subhead reveal">
+            Website Design & Branding
+          </p>
+          <span>ROLE</span>
+          <p class="subhead reveal">
+            Strengthened Design Language Increased Conversions All 3D imagery was created by Ubunzo.
+          </p>
+        </div>
+        <div class="hero-visual reveal" aria-label="Featured visual">
+          <div class="orb"></div>
+          <img src="https://images.ctfassets.net/eqb1x10m46e1/7DM2b5yCjMXjhrvdA6Iv7u/08c5b76813217c8cfa4849d3d320b974/Baunfire_Case_Study_Lumana_Hero_Image_01.png">
+      </div>
+    </section>
+
+    <!-- Intro -->
+    <section id="intro" class="intro">
+      <div class="container">
+        <div class="content">
+          <div class="reveal">
+            <span class="eyebrow"></span>
+            <h2 style="margin:0 0 12px; font-size: clamp(24px, 4vw, 40px); line-height:1.1">Modern, AI-powered video security and safety in a single platform</h2><br>
+            <p style="color:var(--muted); max-width:60ch">
+                Lumana delivers revolutionary safety to its clients with a cutting-edge, AI-powered video security platform. Lumana’s technology helps teams see critical events, better understand situations and quickly respond with precision. Lumana selected Baunfire as its partner to elevate the company website. Our teams collaborated to craft a more memorable brand impression, create a new brand identity and optimize the website for increased conversions.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <img src="https://images.ctfassets.net/eqb1x10m46e1/54rD4LWDR5SFxGxdroerPy/2b2112f09b3a9f3e5082964e8d1c2925/Baunfire_Case_Study_Lumana_Lifestyle_Render_01.png">
+    <br><br>
+    <img src="https://downloads.ctfassets.net/eqb1x10m46e1/3McuARgVbiJdVczarXyN6/d01cf155a65d72d61f7bc1d836eb3180/Baunfire_Case_Study_Lumana_Hero_Animation.gif">
+
+    <section id="intro" class="intro">
+      <div class="container">
+        <div class="content">
+          <div class="reveal">
+            <span class="eyebrow"></span>
+            <h2 style="margin:0 0 12px; font-size: clamp(24px, 4vw, 40px); line-height:1.1">Craft a memorable website that resonates with Lumana’s users</h2><br>
+            <p style="color:var(--muted); max-width:60ch">
+                Lumana’s team wanted a website that conveys their unique personality and leaves a lasting impression. To strategize an approach, Baunfire engaged in collaborative workshops with Lumana to learn more about their business, aspirations, audience and competitors.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <img src="https://images.ctfassets.net/eqb1x10m46e1/5rRQnpCBWOMKia7PkYXhFo/9c43b0561462f64cf090e561e6ea7495/Baunfire_Case_Study_-_Lumana_-_About_Page_Hero__1_.png">
+    
+    <section id="hero" class="hero">
+      <div class="container">
+        <div class="copy">
+          <h1 class="headline reveal">
+            Conceptualize an aesthetic that is easily recognized as Lumana’s
+          </h1>
+          <p class="subhead reveal">
+            From our learnings, we devised an approach for how to best meet Lumana’s needs within the defined scope and timeline. We incorporated impactful visual elements, custom illustrations and a fresh logo.
+
+All 3D imagery was created by Ubunzo.
+          </p>
+        </div>
+       <img src="https://images.ctfassets.net/eqb1x10m46e1/6dDf9hUMXoXff2W9useK2T/06841ffda17662980981dcb5423979c3/Baunfire_Case_Study_Lumana_Desktop_Design_B.png">
+      </div> 
+    </section>
+
+    <img src="https://images.ctfassets.net/eqb1x10m46e1/66Q6xT2yZSBl8AcNSFITgW/af2b02230743ade9dd184ea424124ba7/Baunfire_Case_Study_Lumana_Lifestyle_Render_02.png">
+    
+    <img src="https://images.ctfassets.net/eqb1x10m46e1/3ZW6xGneb9hheC84YSNtoW/5a4827b17b91337f4f9cb295c68a3781/Baunfire_Case_Study_Lumana_Desktop_Design_A.png">
+
+    <section id="intro" class="intro">
+      <div class="container">
+        <div class="content">
+          <div class="reveal">
+            <span class="eyebrow"></span>
+            <h2 style="margin:0 0 12px; font-size: clamp(24px, 4vw, 40px); line-height:1.1">Overall, a light clean feel with minimal color usage</h2><br>
+            <p style="color:var(--muted); max-width:60ch">
+                Baunfire embraced a sophisticated aesthetic, balancing light and dark elements with a user-friendly and visually-striking 80% light to 20% dark contrast ratio.
+
+
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <img src="https://images.ctfassets.net/eqb1x10m46e1/7JQHoamsnBOyGgMS75qZMk/a63b8a2ebbe510a45a23fcb9e75e672a/Baunfire_Case_Study_-_Lumana_-_08_-_Color_-_1200x780-A__1_.png">
+
+    <section id="intro" class="intro">
+      <div class="container">
+        <div class="content">
+          <div class="reveal">
+            <span class="eyebrow"></span>
+            <h2 style="margin:0 0 12px; font-size: clamp(24px, 4vw, 40px); line-height:1.1">Timeless type to highlight the company’s history — and future</h2><br>
+            <p style="color:var(--muted); max-width:60ch">
+                The website uses sans-serif typography to align with the brand. Hovers and micro animations boost the overall impression, and intentional animation highlights key content
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <img src="https://images.ctfassets.net/eqb1x10m46e1/1IK4NmjDyi5D9ZHXVq2q4a/55a9fc0b1ae15269b712770f741d2b21/Baunfire_Case_Study_-_Lumana_-_09_-_Type_-_1200x780-A__1_.png">
+
+    <section id="hero" class="hero">
+      <div class="container">
+        <div class="copy">
+          <h2 class="subhead reveal">Engaging across all devices</h2><br>
+          <p class="subhead reveal">
+            The high-end, modern design considers all users, with a simplified version of complex layouts and interactions accessible by mobile users.
+
+            All 3D imagery was created by Ubunzo.
+          </p>
+        </div>
+       <img src="https://images.ctfassets.net/eqb1x10m46e1/6SzJD5YCexd0T09bUs0CDL/ba75659db2a79d1ba2492e2ef4898962/Baunfire_Case_Study_Lumana_Mobile_Design_B.png">
+      </div> 
+    </section>
+
+    <!-- Featured Work / Product Highlights -->
+    <section id="work" class="work">
+      <div class="container">
+        <span class="eyebrow">WORK</span>
+        <div class="grid">
+          <article class="card item reveal">
+            <div class="thumb">
+              <img loading="lazy" alt="Project cover placeholder"
+                   src="https://images.ctfassets.net/eqb1x10m46e1/4mEGXgt1ZbAULLNGBxylr9/8d0b75b0443d2b0866e690d8b2e5594a/Baunfire_CaseStudy_Incorta_CorporateB2BWebsite_Thumbnail_A.png?w=840&h=1122&q=90&fm=webp" />
+            </div>
+            <div class="body">
+              <div class="tag">corporate website</div>
+              <div class="title">Incorta</div>
+            </div>
+          </article>
+          <article class="card item reveal">
+            <div class="thumb">
+              <img loading="lazy" alt="Project cover placeholder"
+                   src="https://images.ctfassets.net/eqb1x10m46e1/1R7jpiDnBn38GYO41ZDDKW/c634cb8d81748991a538503411fc402d/Baunfire_SV1.gif?w=840&h=1122&q=90&fm=webp" />
+            </div>
+            <div class="body">
+              <div class="tag">Sikicon Valley</div>
+              <div class="title"></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Video -->
+    <div style="max-width: 1680px; margin: 0px auto;">
+        <div style="max-width: 1680px; margin: 0px auto;">
+            <div> 
+               <div class="detail-image-wrapper appear undefined">
+                   <div style="padding-top: 53.5714%;">
+                    <img src="" alt>
+                   </div>
+               </div>
+            </div> 
+        </div>
+    </div>
+    <!-- Contact -->
+    <section id="contact" class="contact">
+      <div class="container">
+        <span class="eyebrow">Contact</span>
+        <div class="cols">
+          <div class="details reveal">
+            <h3 style="margin:6px 0 8px"> BAUNFIRE</h3>
+            <div class="stack">
+              <div>75 E Santa Clara St, Ste 1425 San Jose, California 95113</div>
+              <a href="mailto:">hello@baunfire.com</a>
+              <a href="tel:">(404) 889 9889</a>
+              <div class="note">Mon–Fri · 9am–5pm</div>
+              <div style="display:flex; gap:10px; margin-top:6px">
+                <a href="#" aria-label="LinkedIn">LinkedIn</a>
+                <a href="#" aria-label="Twitter">Twitter/X</a>
+                <a href="#" aria-label="Instagram">Instagram</a>
+              </div>
+            </div>
+          </div>
+          <form id="contact-form" class="reveal" novalidate>
+            <div>
+              <label for="name">Name</label>
+              <input id="name" name="name" autocomplete="name" placeholder="Your name" required />
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" placeholder="you@company.com" required />
+            </div>
+            <div class="full">
+              <label for="subject">Subject</label>
+              <input id="subject" name="subject" placeholder="What can we help with?" />
+            </div>
+            <div class="full">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="Tell us about your project..." required></textarea>
+            </div>
+            <div class="full form-actions">
+              <span class="success" id="success">Thanks! We’ll be in touch.</span>
+              <span class="error" id="error">Something went wrong. Please try again.</span>
+              <button type="submit" class="cta">Send message</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <button class="to-top" id="to-top" aria-label="Back to top">↑</button>
+
+  <script>
+    // Utility: set CSS var for header height to support scroll-margin offset
+    const header = document.getElementById('site-header');
+    const setHeaderHeight = () => {
+      document.documentElement.style.setProperty('--header-height', header.offsetHeight + 'px');
+    };
+    setHeaderHeight();
+    window.addEventListener('resize', setHeaderHeight);
+
+    // Sticky header shadow & back-to-top
+    const toTop = document.getElementById('to-top');
+    const onScroll = () => {
+      const y = window.scrollY || document.documentElement.scrollTop;
+      header.classList.toggle('scrolled', y > 8);
+      toTop.classList.toggle('show', y > 600);
+    };
+    document.addEventListener('scroll', onScroll, { passive:true });
+    toTop.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+
+    // Mobile drawer
+    const toggleBtn = document.querySelector('.menu-toggle');
+    const drawer = document.getElementById('mobile-drawer');
+    toggleBtn?.addEventListener('click', () => {
+      const open = drawer.classList.toggle('open');
+      toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    drawer?.addEventListener('click', (e) => {
+      if(e.target.tagName === 'A'){ drawer.classList.remove('open'); toggleBtn.setAttribute('aria-expanded','false'); }
+    });
+
+    // Scroll reveal
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!prefersReduced && 'IntersectionObserver' in window){
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            entry.target.classList.add('in');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    } else {
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+    }
+
+    // Active nav link highlighting
+    const navLinks = Array.from(document.querySelectorAll('.nav-links a'));
+    const sections = Array.from(document.querySelectorAll('main section[id]'));
+    if ('IntersectionObserver' in window){
+      const navIO = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            const id = entry.target.id;
+            navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+          }
+        });
+      }, { rootMargin: '-40% 0px -55% 0px', threshold: 0.01 });
+      sections.forEach(sec => navIO.observe(sec));
+    }
+
+    // Auto play/pause video when in view
+    const showreel = document.getElementById('showreel');
+    if (showreel && 'IntersectionObserver' in window){
+      const vIO = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting && showreel.paused && showreel.autoplay !== true) {
+          // don't auto-play if user hasn't interacted; keep controls on
+          // You can choose to auto-play muted:
+          // showreel.muted = true; showreel.play().catch(()=>{});
+        } else if (!entry.isIntersecting && !showreel.paused) {
+          showreel.pause();
+        }
+      }, { threshold: 0.25 });
+      vIO.observe(showreel);
+    }
+
+    // Contact form (demo only — replace with your backend)
+    const form = document.getElementById('contact-form');
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const success = document.getElementById('success');
+      const error = document.getElementById('error');
+      success.style.display = 'none'; error.style.display = 'none';
+
+      // Simple validation
+      const data = Object.fromEntries(new FormData(form).entries());
+      if(!data.name || !data.email || !data.message){
+        error.textContent = 'Please fill in the required fields.'; error.style.display='inline';
+        return;
+      }
+      try {
+        // TODO: Replace with your API endpoint
+        // await fetch('/api/contact', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) });
+        await new Promise(r => setTimeout(r, 600)); // simulate
+        form.reset();
+        success.style.display = 'inline';
+      } catch (err) {
+        error.textContent = 'Something went wrong. Please try again.'; error.style.display='inline';
+      }
+    });
+
+    // Set year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

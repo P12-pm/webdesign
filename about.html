@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>about-baunfire</title>
+  <meta name="description" content="[Short intro about your brand.]" />
+  <meta name="theme-color" content="#0b0d14" />
+  <meta property="og:title" content="[BrandName]" />
+  <meta property="og:description" content="[Short intro about your brand.]" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://yourdomain.com" />
+  <meta property="og:image" content="https://yourdomain.com/assets/og-image.jpg" />
+
+  <style>
+   
+   :root{
+    --bg: #0b0d14;
+    --surface: #0f1324;
+    --surface-2: #0c1021;
+    --text: #e7eaf3;
+    --muted: #a0a8bd;
+    --accent: #7c5cff;
+    --accent-2: #00d4ff;
+    --border: #1b2238;
+    --maxw: 1200px;
+    --radius: 16px;
+    --radius-sm: 12px;
+    --shadow: 0 10px 30px rgba(0,0,0,.25);
+  
+    --step--1: clamp(0.85rem, 0.8rem + 0.1vw, 0.95rem);
+    --step-0: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+    --step-1: clamp(1.125rem, 1rem + 0.6vw, 1.375rem);
+    --step-2: clamp(1.5rem, 1.2rem + 1.8vw, 2rem);
+    --step-3: clamp(2.2rem, 1.8rem + 3vw, 3rem);
+    --step-4: clamp(2.8rem, 2.2rem + 4.5vw, 4.2rem);
+  }
+  
+  *,
+  *::before,
+  *::after { box-sizing: border-box; }
+  
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    margin: 0;
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji";
+    font-size: var(--step-0);
+    line-height: 1.55;
+    background: radial-gradient(1000px 600px at 80% -10%, rgba(124,92,255,.25), transparent),
+                radial-gradient(800px 500px at 10% 110%, rgba(0,212,255,.18), transparent),
+                var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  img, svg, video { max-width: 100%; height: auto; display: block; }
+  
+  a { color: #e8ecff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  
+  .container {
+    width: min(100% - 2rem, var(--maxw));
+    margin-inline: auto;
+  }
+  
+  .section { padding: clamp(60px, 8vw, 120px) 0; }
+  
+  h1, h2, h3 {
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+  }
+  h1 { font-size: var(--step-4); margin: 0 0 1rem; }
+  h2 { font-size: var(--step-2); margin: 0 0 .75rem; }
+  h3 { font-size: var(--step-1); margin: 0 0 .5rem; }
+  
+  .muted { color: var(--muted); }
+  .small { font-size: var(--step--1); }
+  
+  /* Focus */
+  :focus-visible {
+    outline: 2px solid var(--accent-2);
+    outline-offset: 3px;
+  }
+  
+  /* Skip link */
+  .skip-link {
+    position: absolute; left: -9999px; top: auto;
+  }
+  .skip-link:focus {
+    left: 1rem; top: 1rem; background: #0e1222; padding: .5rem .75rem; border-radius: 8px; z-index: 10000;
+  }
+  
+  /* =========
+     Header
+     ========= */
+  .site-header {
+    position: sticky; top: 0; z-index: 1000;
+    backdrop-filter: blur(10px);
+    background: color-mix(in oklab, var(--bg) 80%, transparent);
+    border-bottom: 1px solid var(--border);
+  }
+  .header-inner {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: 1rem;
+    padding: .8rem 0;
+  }
+  .brand { display: inline-flex; align-items: center; gap: .65rem; }
+  .brand .logo { width: 32px; height: 32px; object-fit: contain; }
+  .brand-name { font-weight: 700; letter-spacing: .02em; }
+  
+  .site-nav ul { display: flex; gap: 1.25rem; align-items: center; list-style: none; margin: 0; padding: 0; }
+  .site-nav a { padding: .45rem .6rem; border-radius: 8px; color: var(--text); text-decoration: none; }
+  .site-nav a.active { background: rgba(124,92,255,.16); }
+  
+  .menu-toggle {
+    display: none;
+    width: 44px; height: 44px; border: 1px solid var(--border);
+    background: var(--surface); border-radius: 10px; color: var(--text);
+  }
+  .menu-bar { display: block; width: 22px; height: 2px; background: var(--text); margin: 5px auto; border-radius: 1px; }
+  
+  .mobile-nav { display: none; }
+  .mobile-nav.open { display: block; }
+  .mobile-nav ul { list-style: none; margin: 0; padding: .5rem 1rem 1rem; display: grid; gap: .5rem; }
+  .mobile-nav a { display: block; padding: .75rem; border-radius: 10px; background: var(--surface-2); }
+  .mobile-nav .mt { margin-top: .25rem; }
+  
+  /* Progress bar */
+  #progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    z-index: 1100;
+  }
+  
+  /* =========
+     Buttons
+     ========= */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+    padding: .85rem 1.1rem; border-radius: 12px; border: 1px solid transparent;
+    text-decoration: none; white-space: nowrap; cursor: pointer; user-select: none;
+  }
+  .btn-small { padding: .5rem .75rem; border-radius: 10px; font-size: var(--step--1); }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #0b0d14; font-weight: 700;
+  }
+  .btn-secondary {
+    background: #121831; border-color: var(--border); color: var(--text);
+  }
+  .btn-ghost {
+    background: transparent; border: 1px solid var(--border); color: var(--text);
+  }
+  .btn:hover { text-decoration: none; filter: brightness(1.08); }
+  
+  /* =========
+     Hero
+     ========= */
+  .hero { position: relative; overflow: clip; }
+  .hero-grid {
+    display: grid; gap: clamp(1rem, 2vw, 2rem);
+    grid-template-columns: 1.2fr .8fr;
+  }
+  .eyebrow { color: #b5c3ff; letter-spacing: .12em; text-transform: uppercase; font-size: .8rem; }
+  .lead { color: var(--muted); margin: .75rem 0 1.25rem; max-width: 55ch; }
+  .cta { display: flex; flex-wrap: wrap; gap: .75rem; }
+  
+  .media-frame {
+    aspect-ratio: 16/10;
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, #12162b, #0b0d14);
+    border: 1px solid var(--border);
+    overflow: hidden; box-shadow: var(--shadow);
+  }
+  .hero-media img { width: 100%; height: 100%; object-fit: cover; }
+  
+  .scroll-hint {
+    position: absolute; left: 50%; translate: -50% 0; bottom: 10px;
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid var(--border); background: rgba(20, 24, 45, .6); color: var(--text);
+  }
+  
+  .bg-decor {
+    position: absolute; inset: -20% -10% auto -10%;
+    height: 60%;
+    background:
+     radial-gradient(600px 400px at 20% 20%, rgba(124,92,255,.18), transparent),
+     radial-gradient(600px 400px at 80% 80%, rgba(0,212,255,.14), transparent);
+    pointer-events: none;
+  }
+  
+  /* =========
+     Layout helpers
+     ========= */
+  .grid-2 { display: grid; gap: clamp(1rem, 2vw, 2rem); grid-template-columns: 1.1fr .9fr; }
+  .grid-4 { display: grid; gap: 1.25rem; grid-template-columns: repeat(4, 1fr); }
+  .grid-cards { display: grid; gap: 1.25rem; grid-template-columns: repeat(4, minmax(200px, 1fr)); }
+  .grid-work { display: grid; gap: 1.25rem; grid-template-columns: repeat(3, minmax(240px, 1fr)); }
+  
+  .rounded { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+  
+  /* About */
+  .checklist { list-style: none; padding: 0; margin: 1rem 0; display: grid; gap: .5rem; }
+  .checklist li::before { content: "✔"; color: #75f0c4; margin-right: .5rem; }
+  .quick-contacts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-top: 1rem; }
+  .qc .label { display: block; color: var(--muted); font-size: .8rem; margin-bottom: .25rem; }
+  
+  /* Services/Values cards */
+  .card {
+    background: linear-gradient(180deg, #0e1230, #0b0d14);
+    border: 1px solid var(--border);
+    padding: 1.1rem;
+    border-radius: var(--radius);
+    box-shadow: 0 6px 20px rgba(0,0,0,.15);
+  }
+  .card.service:hover, .card.value:hover { transform: translateY(-2px); transition: transform .2s ease; }
+  .icon { font-size: 1.4rem; }
+  .i-gradient { background: linear-gradient(135deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .tags { list-style: none; display: flex; gap: .5rem; padding: 0; margin: .75rem 0 0; flex-wrap: wrap; }
+  .tags li { border: 1px solid var(--border); padding: .25rem .5rem; border-radius: 999px; font-size: .8rem; color: var(--muted); }
+  
+  /* Stats */
+  .stats .stat {
+    background: radial-gradient(200px 160px at 60% -20%, rgba(124,92,255,.16), transparent),
+                var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+  }
+  .stat .label { color: var(--muted); font-size: .85rem; }
+  .stat .count { font-size: var(--step-3); font-weight: 800; display: block; margin-top: .25rem; }
+  
+  /* Work */
+  .work-card {
+    border-radius: var(--radius); overflow: hidden; position: relative;
+    border: 1px solid var(--border); background: #0e1230;
+  }
+  .work-media { aspect-ratio: 16 / 10; overflow: hidden; }
+  .work-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
+  .work-card:hover img { transform: scale(1.04); }
+  .work-meta { padding: .9rem; border-top: 1px solid var(--border); }
+  
+  /* Contact */
+  .contact .info { margin-top: 1.25rem; }
+  .contact .info .row { display: flex; gap: .75rem; margin: .5rem 0; }
+  .contact .info .label { width: 90px; color: var(--muted); }
+  
+  .contact-form .form-row { display: grid; gap: .4rem; margin-bottom: .9rem; }
+  input, select, textarea {
+    background: #0d1330; color: var(--text);
+    border: 1px solid var(--border); border-radius: 12px;
+    padding: .75rem .9rem; width: 100%;
+  }
+  input::placeholder, textarea::placeholder { color: #8e95ad; }
+  .form-actions { display: flex; align-items: center; gap: .75rem; }
+  .form-status { color: #9ae6b4; }
+  
+  /* Footer */
+  .site-footer { border-top: 1px solid var(--border); padding: 2rem 0; }
+  .footer-grid { display: grid; gap: 1rem; grid-template-columns: 1.2fr 1fr auto; align-items: start; }
+  .f-links, .f-social { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .f-social a { border: 1px solid var(--border); padding: .4rem .6rem; border-radius: 999px; }
+  
+  /* =========
+     Reveal animations
+     ========= */
+  .reveal { opacity: 0; transform: translateY(20px); }
+  .reveal.is-visible { opacity: 1; transform: none; transition: opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1); }
+  .delay-1 { transition-delay: .08s; }
+  .delay-2 { transition-delay: .16s; }
+  .delay-3 { transition-delay: .24s; }
+  
+  /* Lazy placeholder */
+  img.lazy { filter: saturate(.9) contrast(.98); }
+  
+  /* =========
+     Responsive
+     ========= */
+  @media (max-width: 1024px) {
+    .site-nav { display: none; }
+    .menu-toggle { display: inline-block; }
+    .hero-grid { grid-template-columns: 1fr; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    .grid-cards { grid-template-columns: repeat(2, minmax(200px, 1fr)); }
+    .grid-work { grid-template-columns: repeat(2, minmax(220px, 1fr)); }
+    .footer-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .grid-4, .grid-cards, .grid-work { grid-template-columns: 1fr; }
+    .quick-contacts { grid-template-columns: 1fr; }
+  }
+  
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal, .reveal.is-visible { transition: none !important; transform: none !important; opacity: 1 !important; }
+    .work-media img { transition: none; }
+  }
+  </style>
+</head>
+<body>
+
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a href="index.html" class="brand" aria-label="Go to home">
+        <span class="brand-name">BAUNFIRE</span>
+      </a>
+
+      <nav class="site-nav" role="navigation" aria-label="Primary">
+        <ul>
+          <li><a href="about.html">About</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="work.html">Work</a></li>
+          <li><a href="letstalk.html" class="btn btn-small btn-ghost">Let’s talk</a></li>
+        </ul>
+      </nav>
+
+      <button class="menu-toggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+        <span class="menu-bar"></span>
+        <span class="menu-bar"></span>
+        <span class="menu-bar"></span>
+      </button>
+    </div>
+
+    <nav id="mobile-menu" class="mobile-nav" aria-label="Mobile">
+      <ul>
+        <li><a href="about.html">About</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="work.html">Work</a></li>
+        <li><a href="letstalk.html">Contact</a></li>
+        <li class="mt"><a href="letstalk.html" class="btn btn-primary">Start a project</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="section hero" id="home" aria-label="Hero">
+      <div class="container hero-grid">
+        <div class="hero-content reveal">
+          <p class="eyebrow">WHO WE ARE</p>
+          <h1>A Passionate Team, Rooted in digital</h1>
+          <p class="lead">Building great things in the heart of Silicon Valley.</p>
+        </div>
+      </div>
+
+      <button class="scroll-hint" aria-label="Scroll to About" data-scroll-to="#about">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 5v14M5 12l7 7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <div class="bg-decor" aria-hidden="true"></div>
+    </section>
+
+    <!-- About / Intro -->
+    <section class="section about" id="about" aria-label="About">
+      <div class="container grid-2">
+        <div class="about-media reveal">
+          <img class="lazy rounded" data-src="https://images.ctfassets.net/eqb1x10m46e1/3ZQjRiXa3bXwrwgCEZkpYM/6b5709a7dbd8679b04be774f3bcab951/About-Hero-2.jpg?w=3000&h=2000&q=90&fm=webp" alt="[BrandName] team or office" width="900" height="700" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Services / Products -->
+    <section class="section services" id="services" aria-label="Services">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>What we do</h2>
+          <p class="muted">From idea to launch. We design, build, and scale products and brands.</p>
+        </div>
+        <div class="grid-cards">
+          <article class="card service reveal">
+            <div class="icon i-gradient" aria-hidden="true">🎯</div>
+            <h3>Brand Strategy</h3>
+            <p>Positioning, messaging, and visual identity systems that resonate.</p>
+            <ul class="tags"><li>Discovery</li><li>Identity</li><li>Guidelines</li></ul>
+          </article>
+
+          <article class="card service reveal delay-1">
+            <div class="icon i-gradient" aria-hidden="true">💡</div>
+            <h3>UX/UI Design</h3>
+            <p>Accessible, conversion-focused interfaces with scalable design systems.</p>
+            <ul class="tags"><li>Wireframes</li><li>Prototyping</li><li>Design System</li></ul>
+          </article>
+
+          <article class="card service reveal delay-2">
+            <div class="icon i-gradient" aria-hidden="true">⚙️</div>
+            <h3>Web Development</h3>
+            <p>Modern stacks, CMS, and headless architectures optimized for speed.</p>
+            <ul class="tags"><li>HTML/CSS/JS</li><li>CMS</li><li>Accessibility</li></ul>
+          </article>
+
+          <article class="card service reveal delay-3">
+            <div class="icon i-gradient" aria-hidden="true">🚀</div>
+            <h3>Product Growth</h3>
+            <p>Launch plans, experimentation, and analytics to fuel growth.</p>
+            <ul class="tags"><li>SEO</li><li>Performance</li><li>Analytics</li></ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Highlights / Stats -->
+    <section class="section highlights" aria-label="Highlights">
+      <div class="container stats grid-4">
+        <div class="stat reveal">
+          <span class="label">Years in business</span>
+          <strong class="count" data-countup data-target="8">0</strong>
+        </div>
+        <div class="stat reveal delay-1">
+          <span class="label">Projects delivered</span>
+          <strong class="count" data-countup data-target="120">0</strong>
+        </div>
+        <div class="stat reveal delay-2">
+          <span class="label">Avg. CLS score</span>
+          <strong class="count" data-countup data-target="0.02">0</strong>
+        </div>
+        <div class="stat reveal delay-3">
+          <span class="label">Client NPS</span>
+          <strong class="count" data-countup data-target="72">0</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- Work / Case Studies -->
+    <section class="section work" id="work" aria-label="Work">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>Selected work</h2>
+          <p class="muted">A few projects representative of our capabilities.</p>
+        </div>
+
+        <div class="grid-work">
+          <!-- Repeat cards as needed -->
+          <article class="work-card reveal">
+            <a href="#" class="work-link" aria-label="View case study">
+              <div class="work-media">
+                <img class="lazy" data-src="https://images.ctfassets.net/eqb1x10m46e1/21qXq3so5DVxpNNIweu3T9/f249f25a589de3f784bb9b4ec0930cc6/Baunfire-Karat-Website-Case-Study_00_-_Thumbnail_-_840x1122.png?w=840&h=1122&q=90&fm=webp" alt="Project 1" width="800" height="600" />
+              </div>
+              <div class="work-meta">
+                <h3>Karat</h3>
+                <p>Web corporate</p>
+              </div>
+            </a>
+          </article>
+
+          <article class="work-card reveal delay-1">
+            <a href="#" class="work-link" aria-label="View case study">
+              <div class="work-media">
+                <img class="lazy" data-src="https://images.ctfassets.net/eqb1x10m46e1/7lfORZnDawbgHbpBDKApA3/4eb2ae12c4e443ea7a96a4d84f49e5da/Baunfire_Case_Study_-_Lumana_-_00_-_Thumbnail_-_840x1122-A__1_.png?w=1680&h=2244&q=90&fm=webp" alt="Project 2" width="800" height="600" />
+              </div>
+              <div class="work-meta">
+                <h3>Lumana</h3>
+                <p>web corporate</p>
+              </div>
+            </a>
+          </article>
+
+          <article class="work-card reveal delay-2">
+            <a href="#" class="work-link" aria-label="View case study">
+              <div class="work-media">
+                <img class="lazy" data-src="https://images.ctfassets.net/eqb1x10m46e1/nm7J0zTD3MXQP0ggtciwJ/160c0a27b79db1a5a9348c5647c6c290/01U_Baunfire_Case_Study_Cellares_Website_Thumbnail.png?w=1680&h=2244&q=90&fm=webp" alt="Project 3" width="800" height="600" />
+              </div>
+              <div class="work-meta">
+                <h3>Cellares</h3>
+                <p>web corporate</p>
+              </div>
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Values / Approach -->
+    <section class="section values" id="values" aria-label="Values">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>Our values</h2>
+          <p class="muted">Principles that guide our work and partnerships.</p>
+        </div>
+        <div class="grid-cards">
+          <article class="card value reveal">
+            <h3>Clarity</h3>
+            <p>We make the complex simple with strategy, structure, and story.</p>
+          </article>
+          <article class="card value reveal delay-1">
+            <h3>Craft</h3>
+            <p>We sweat the details—performance, polish, and accessibility.</p>
+          </article>
+          <article class="card value reveal delay-2">
+            <h3>Momentum</h3>
+            <p>We ship, learn, and iterate to move you forward faster.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section contact" id="contact" aria-label="Contact">
+      <div class="container grid-2">
+        <div class="contact-intro reveal">
+          <h2>Let’s build something great</h2>
+          <p class="muted">Tell us about your goals and timeline. We’ll get back within 1–2 business days.</p>
+
+          <div class="card info">
+            <div class="row">
+              <span class="label">Email</span>
+              <a href="mailto:[email@yourdomain.com]">hello@baunfire.com</a>
+            </div>
+            <div class="row">
+              <span class="label">Phone</span>
+              <a href="tel:[+1234567890]">(404) 889-8998</a>
+            </div>
+            <div class="row">
+              <span class="label">Address</span>
+              <address>75 E Santa Clara St, Ste 1425 San Jose, California 95113</address>
+            </div>
+          </div>
+        </div>
+
+        <form class="contact-form card reveal delay-1" id="contact-form" novalidate>
+          <div class="form-row">
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" placeholder="Your name" required />
+          </div>
+          <div class="form-row">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="you@company.com" required />
+          </div>
+          <div class="form-row">
+            <label for="company">Company</label>
+            <input id="company" name="company" type="text" placeholder="Your company" />
+          </div>
+          <div class="form-row">
+            <label for="services-select">Services</label>
+            <select id="services-select" name="services">
+              <option value="">Select an option</option>
+              <option>Brand Strategy</option>
+              <option>UX/UI Design</option>
+              <option>Web Development</option>
+              <option>Product Growth</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="message">Project details</label>
+            <textarea id="message" name="message" rows="5" placeholder="Goals, timeline, budget..."></textarea>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">Send message</button>
+            <p class="form-status" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="f-brand">
+        <p class="muted small">BAUNFIRE</p>
+      </div>
+      <div class="f-links">
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="work.html">Work</a>
+        <a href="letstalk.html">Contact</a>
+      </div>
+      <div class="f-social">
+        <a href="[https://linkedin.com/company/yourbrand]" aria-label="LinkedIn" title="LinkedIn">in</a>
+        <a href="[https://twitter.com/yourbrand]" aria-label="Twitter/X" title="Twitter">X</a>
+        <a href="[https://instagram.com/yourbrand]" aria-label="Instagram" title="Instagram">IG</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Helpers
+const $ = (s, ctx = document) => ctx.querySelector(s);
+const $$ = (s, ctx = document) => Array.from(ctx.querySelectorAll(s));
+
+const header = $('.site-header');
+const mobileToggle = $('.menu-toggle');
+const mobileMenu = $('#mobile-menu');
+const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Mobile menu
+mobileToggle?.addEventListener('click', () => {
+  const expanded = mobileToggle.getAttribute('aria-expanded') === 'true';
+  mobileToggle.setAttribute('aria-expanded', String(!expanded));
+  mobileMenu.classList.toggle('open');
+  document.body.classList.toggle('nav-open', !expanded);
+});
+$$('#mobile-menu a').forEach(a => {
+  a.addEventListener('click', () => {
+    mobileMenu.classList.remove('open');
+    mobileToggle.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('nav-open');
+  });
+});
+
+// Smooth anchor navigation with header offset
+function smoothScrollTo(target) {
+  const el = typeof target === 'string' ? $(target) : target;
+  if (!el) return;
+  const headerH = header?.offsetHeight || 0;
+  const y = window.scrollY + el.getBoundingClientRect().top - headerH - 8;
+  window.scrollTo({ top: y, behavior: prefersReduced ? 'auto' : 'smooth' });
+}
+$$('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const hash = a.getAttribute('href');
+    if (hash && hash.length > 1) {
+      e.preventDefault();
+      smoothScrollTo(hash);
+    }
+  });
+});
+
+$$('.scroll-hint').forEach(btn => {
+  btn.addEventListener('click', () => smoothScrollTo(btn.dataset.scrollTo || '#about'));
+});
+
+// Reveal on scroll
+(function revealOnScroll() {
+  const items = $$('.reveal');
+  if (!items.length || prefersReduced) {
+    items.forEach(el => el.classList.add('is-visible'));
+    return;
+  }
+  const io = new IntersectionObserver((entries, obs) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.16 });
+  items.forEach(el => io.observe(el));
+})();
+
+// Lazy-load images
+(function lazyImages() {
+  const imgs = $$('img.lazy[data-src]');
+  if (!imgs.length) return;
+  const load = img => {
+    img.src = img.dataset.src;
+    img.removeAttribute('data-src');
+    img.addEventListener('load', () => img.classList.remove('lazy'), { once: true });
+  };
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          load(e.target);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { rootMargin: '200px' });
+    imgs.forEach(i => io.observe(i));
+  } else {
+    imgs.forEach(load);
+  }
+})();
+
+// Countup stats
+(function countup() {
+  const els = $$('[data-countup]');
+  if (!els.length) return;
+
+  function animate(el) {
+    const target = parseFloat(el.dataset.target || '0');
+    const isFloat = String(el.dataset.target).includes('.') || target % 1 !== 0;
+    const duration = prefersReduced ? 0 : 1200;
+    const startTime = performance.now();
+    const startVal = 0;
+
+    function tick(now) {
+      const p = Math.min(1, (now - startTime) / duration);
+      const eased = p < 0.5 ? 2*p*p : -1 + (4 - 2*p) * p; // easeInOutQuad
+      const current = startVal + (target - startVal) * (duration ? eased : 1);
+      el.textContent = isFloat ? current.toFixed(2) : Math.round(current).toLocaleString();
+      if (p < 1 && duration) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          animate(e.target);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    els.forEach(el => io.observe(el));
+  } else {
+    els.forEach(animate);
+  }
+})();
+
+// Scroll progress bar
+(function progress() {
+  const bar = $('#progress');
+  if (!bar) return;
+  let ticking = false;
+  function update() {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    const p = docH > 0 ? (window.scrollY / docH) * 100 : 0;
+    bar.style.width = `${p}%`;
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(update);
+      ticking = true;
+    }
+  }, { passive: true });
+  update();
+})();
+
+// Active nav link highlight
+(function activeLink() {
+  const links = $$('header .site-nav a[href^="#"]');
+  const sections = $$('main section[id]');
+  if (!links.length || !sections.length) return;
+
+  function setActive(id) {
+    links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${id}`));
+  }
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) setActive(e.target.id);
+    });
+  }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+  sections.forEach(s => io.observe(s));
+})();
+
+// Footer year
+$('#year') && ($('#year').textContent = new Date().getFullYear());
+
+// Contact form (demo)
+(function formHandler() {
+  const form = $('#contact-form');
+  const status = $('.form-status');
+  if (!form) return;
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form).entries());
+    // TODO: Replace with your API endpoint
+    status.textContent = 'Thanks! We’ll be in touch shortly.';
+    form.reset();
+  });
+})();
+  </script>
+</body>
+</html>

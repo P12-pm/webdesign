@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="description" content="Insights and ideas from Your Brand — modern, responsive blog template." />
+  <title>Baunfire  — Journal</title>
+
+  <!-- Performance -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+      /* Reset */
+*,*::before,*::after{box-sizing:border-box}
+html:focus-within{scroll-behavior:smooth}
+body{margin:0;text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
+img,svg,video{display:block;max-width:100%}
+button,input{font:inherit}
+
+/* Brand tokens */
+:root{
+  --bg:#0b0f14;
+  --surface:#0f172a;
+  --elev:rgba(15,23,42,.7);
+  --text:#e5e7eb;
+  --muted:#9aa5b1;
+  --brand:#7c5cff;
+  --brand-2:#22d3ee;
+  --chip:#1f2937;
+  --card:#0c1220;
+  --border:rgba(255,255,255,.08);
+
+  --radius:14px;
+  --radius-sm:10px;
+
+  --shadow:0 10px 30px rgba(0,0,0,.35);
+  --shadow-soft:0 6px 16px rgba(0,0,0,.24);
+
+  --container:1200px;
+  --gutter:24px;
+
+  --speed-1:180ms;
+  --speed-2:320ms;
+  --speed-3:700ms;
+}
+[data-theme="light"]{
+  --bg:#f7fafc;
+  --surface:#ffffff;
+  --elev:rgba(255,255,255,.65);
+  --text:#0b0f14;
+  --muted:#5b6472;
+  --chip:#eef2f7;
+  --card:#ffffff;
+  --border:rgba(0,0,0,.08);
+  --shadow:0 10px 30px rgba(0,0,0,.12);
+  --shadow-soft:0 6px 16px rgba(0,0,0,.08);
+}
+:root{color-scheme:dark light}
+
+/* Base */
+body{
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+  color:var(--text);
+  background: radial-gradient(1200px 600px at 10% -10%, #13203f 0%, transparent 60%),
+              radial-gradient(1200px 600px at 90% 0%, #0d243a 0%, transparent 60%),
+              var(--bg);
+  line-height:1.65;
+}
+[data-theme="light"] body{
+  background: radial-gradient(900px 500px at 10% -10%, #e8f2ff 0%, transparent 60%),
+              radial-gradient(900px 500px at 90% 0%, #f1f7ff 0%, transparent 60%),
+              var(--bg);
+}
+.container{max-width:var(--container);margin-inline:auto;padding-inline:var(--gutter)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity var(--speed-2) ease, transform var(--speed-2) ease}
+.reveal.is-inview{opacity:1;transform:translateY(0)}
+.no-results{text-align:center;margin-block:28px;color:var(--muted)}
+
+/* Scroll progress */
+.scroll-progress{position:fixed;top:0;left:0;right:0;height:3px;background:transparent;z-index:999}
+.scroll-progress .bar{height:100%;width:0;background:linear-gradient(90deg,var(--brand),var(--brand-2));transition:width 100ms linear}
+
+/* Header */
+.site-header{
+  position:sticky;top:0;z-index:998;
+  background: color-mix(in srgb, var(--elev) 100%, transparent);
+  backdrop-filter: saturate(140%) blur(10px);
+  border-bottom:1px solid var(--border);
+}
+.header__inner{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;color:var(--text);text-decoration:none;font-weight:700}
+.logo__mark{color:var(--brand)}
+.logo__text{letter-spacing:.3px}
+.nav__toggle{display:none;position:relative;width:38px;height:38px;border-radius:10px;background:var(--chip);border:1px solid var(--border);color:var(--text)}
+.nav__toggle-bar{position:absolute;inset:0;margin:auto;width:18px;height:2px;background:currentColor;box-shadow:0 -6px 0 0 currentColor, 0 6px 0 0 currentColor;border-radius:2px}
+.nav__list{display:flex;gap:22px;list-style:none;margin:0;padding:0}
+.nav__list a{color:var(--text);text-decoration:none;padding:10px 6px;border-radius:8px}
+.nav__list a:hover{background:var(--chip)}
+.theme-toggle{
+  border:1px solid var(--border);background:var(--chip);color:var(--text);
+  width:38px;height:38px;border-radius:10px;display:grid;place-items:center
+}
+.theme-toggle .icon-moon{display:none}
+[data-theme="light"] .theme-toggle .icon-sun{display:none}
+[data-theme="light"] .theme-toggle .icon-moon{display:block}
+
+/* Hero */
+.hero{padding-block:64px 32px;position:relative}
+.hero__inner{display:grid;gap:32px;align-items:center;grid-template-columns: 1.1fr 1fr}
+.eyebrow{text-transform:uppercase;letter-spacing:.18em;font-weight:600;color:var(--brand);margin:0 0 8px}
+.display{font-family:"Playfair Display", ui-serif, Georgia, serif;line-height:1.1;font-size: clamp(36px, 5.4vw, 72px);margin:0 0 12px}
+.lead{font-size:clamp(16px, 2.2vw, 18px);color:var(--muted);max-width:52ch;margin:0 0 18px}
+.search{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);padding:8px 10px;border-radius:12px;box-shadow:var(--shadow-soft)}
+.search input{flex:1;background:transparent;border:0;outline:0;color:var(--text);padding:6px}
+.search__clear{border:0;background:transparent;color:var(--muted);font-size:20px;line-height:1;padding:6px;border-radius:8px}
+.search__clear:hover{background:var(--chip);color:var(--text)}
+.hero__media img{border-radius:16px;box-shadow:var(--shadow);transform:translateZ(0)}
+.hero__gradient{position:absolute;inset:auto 0 0 0;height:200px;background:linear-gradient(180deg, transparent, rgba(0,0,0,0.08));pointer-events:none}
+[data-theme="light"] .hero__gradient{background:linear-gradient(180deg, transparent, rgba(0,0,0,0.04))}
+
+/* Filters */
+.filters{position:sticky;top:64px;z-index:997;background:linear-gradient(var(--bg), var(--bg));border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.filters__inner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
+.filters__scroller{display:flex;gap:8px;overflow:auto;padding-block:2px}
+.chip{border:1px solid var(--border);background:var(--chip);color:var(--text);border-radius:999px;padding:8px 14px;cursor:pointer;transition:background var(--speed-1) ease, transform var(--speed-1) ease}
+.chip:hover{transform:translateY(-1px)}
+.chip.is-active{background:linear-gradient(90deg,var(--brand),var(--brand-2));color:#08121f;border-color:transparent}
+.filters__meta{display:flex;align-items:center;gap:12px;color:var(--muted)}
+.sort{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:10px;padding:6px 10px}
+.sort[aria-pressed="true"]{background:linear-gradient(90deg,var(--brand),var(--brand-2));color:#08121f;border-color:transparent}
+
+/* Posts */
+.posts{padding-block:32px 64px}
+.posts__grid{display:grid;gap:22px;grid-template-columns: repeat(12, minmax(0,1fr))}
+.post-card{
+  position:relative;background:var(--card);border:1px solid var(--border);
+  border-radius:16px;overflow:hidden;box-shadow:var(--shadow-soft);
+  grid-column: span 4;
+  transition:transform var(--speed-2) cubic-bezier(.2,.7,.2,1), box-shadow var(--speed-2);
+  content-visibility:auto;contain-intrinsic-size: 320px 260px;
+}
+.post-card:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
+.post-card--featured{grid-column: span 8}
+.post-card__link{display:grid;grid-template-rows:auto 1fr;color:inherit;text-decoration:none;height:100%}
+.post-card__media{overflow:hidden}
+.post-card__media img{width:100%;aspect-ratio: 16/10;object-fit:cover;transition:transform var(--speed-3) cubic-bezier(.2,.7,.2,1);filter:blur(14px) saturate(1.1);transform:scale(1.03)}
+.post-card:hover .post-card__media img{transform:scale(1.05)}
+.post-card__media img.is-loaded{filter:none;transform:none}
+.post-card__content{display:grid;gap:8px;padding:16px 16px 18px}
+.post-card__cat{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--brand);font-weight:700}
+.post-card__title{font-size:clamp(18px, 2.2vw, 22px);line-height:1.3;margin:0}
+.post-card__excerpt{margin:0;color:var(--muted)}
+.post-card__meta{display:flex;gap:12px;color:var(--muted);font-size:14px}
+
+.posts__actions{display:flex;justify-content:center;margin-top:16px}
+.btn{background:linear-gradient(90deg,var(--brand),var(--brand-2));border:0;border-radius:12px;padding:12px 18px;color:#08121f;font-weight:700;cursor:pointer}
+.btn:hover{filter:saturate(1.1)}
+
+.about,.contact{padding-block:72px;border-top:1px solid var(--border)}
+.about__inner,.contact__inner{max-width:800px}
+.about h2,.contact h2{font-family:"Playfair Display", ui-serif, Georgia, serif;font-size:clamp(28px, 3.4vw, 40px);margin:0 0 8px}
+
+/* Footer */
+.site-footer{border-top:1px solid var(--border);padding-block:28px;background:var(--surface)}
+.footer__inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.social{display:flex;gap:16px;list-style:none;margin:0;padding:0}
+.social a{color:var(--muted);text-decoration:none}
+.social a:hover{color:var(--text)}
+
+/* Skip link */
+.skip-link{position:absolute;left:-9999px;top:auto}
+.skip-link:focus{left:16px;top:10px;background:var(--surface);border-radius:8px;padding:8px 10px;border:1px solid var(--border);z-index:999}
+
+/* Responsive */
+@media (max-width: 1100px){
+  .hero__inner{grid-template-columns: 1fr}
+  .post-card--featured{grid-column: span 12}
+  .post-card{grid-column: span 6}
+}
+@media (max-width: 740px){
+  .header__inner{height:60px}
+  .nav__toggle{display:inline-grid}
+  .nav__list{position:absolute;inset:60px 16px auto 16px;background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow);border-radius:14px;padding:14px;display:none;flex-direction:column;gap:6px}
+  .nav__list.is-open{display:flex}
+  .posts__grid{grid-template-columns: repeat(6, minmax(0,1fr))}
+  .post-card{grid-column: span 6}
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  html:focus-within{scroll-behavior:auto}
+  .reveal{opacity:1;transform:none}
+  .post-card:hover .post-card__media img{transform:none}
+}
+  </style>
+
+  <!-- Preload hero image -->
+  <link rel="preload" as="image"
+        href="https://picsum.photos/seed/hero-1/1600/900"
+        imagesrcset="
+          https://picsum.photos/seed/hero-1/800/450 800w,
+          https://picsum.photos/seed/hero-1/1200/675 1200w,
+          https://picsum.photos/seed/hero-1/1600/900 1600w"
+        imagesizes="100vw">
+</head>
+<body>
+
+  <!-- Scroll progress -->
+  <div class="scroll-progress" aria-hidden="true">
+    <div class="bar"></div>
+  </div>
+
+  <header class="site-header" data-header>
+    <div class="container header__inner">
+      <a class="logo" href="index.html" aria-label="Go to homepage">
+        <span class="logo__text">BAUNFIRE</span>
+      </a>
+
+      <nav class="nav" aria-label="Primary">
+        <button class="nav__toggle" aria-expanded="false" aria-controls="primary-menu">
+          <span class="nav__toggle-bar"></span>
+          <span class="sr-only">Toggle menu</span>
+        </button>
+        <ul id="primary-menu" class="nav__list">
+          <li><a href="blog1.html">Blog</a></li>
+          <li><a href="about.html" data-scroll>About</a></li>
+          <li><a href="contact.html" data-scroll>Contact</a></li>
+        </ul>
+      </nav>
+
+      <button class="theme-toggle" type="button" aria-pressed="false">
+        <span class="sr-only">Toggle theme</span>
+        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.76 4.84l-1.8-1.79L3.17 4.84l1.79 1.79L6.76 4.84zM1 13h3v-2H1v2zm10 10h2v-3h-2v3zm7.24-18.16l1.79-1.79l-1.79-1.79l-1.79 1.79l1.79 1.79zM20 13h3v-2h-3v2zM4.22 19.78l1.79-1.79l-1.79-1.79l-1.79 1.79l1.79 1.79zM13 1h-2v3h2V1zm6.78 18.78l-1.79-1.79l-1.79 1.79l1.79 1.79l1.79-1.79zM12 6a6 6 0 100 12a6 6 0 000-12z"/></svg>
+        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20 15.31A8 8 0 1111.69 4a8.5 8.5 0 108.31 11.31z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="content">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__copy">
+          <p class="eyebrow">INSIGHTS</p>
+          <h1 class="display">Perspectives on digital and web</h1>
+          <p class="lead">our thoughts on creativity, digital, and branding.</p>
+
+          <div class="hero__actions">
+            <form class="search" role="search" aria-label="Search articles">
+              <input id="search" name="search" type="search" placeholder="Search articles…" autocomplete="off" />
+              <button type="button" class="search__clear" aria-label="Clear search">×</button>
+            </form>
+          </div>
+        </div>
+
+        <figure class="hero__media reveal">
+          <img
+            class="lazy"
+            src="https://picsum.photos/seed/hero-1/1200/675"
+            srcset="
+              https://picsum.photos/seed/hero-1/800/450 800w,
+              https://picsum.photos/seed/hero-1/1200/675 1200w,
+              https://picsum.photos/seed/hero-1/1600/900 1600w
+            "
+            sizes="(min-width: 1200px) 55vw, 100vw"
+            alt="Abstract editorial hero"
+            width="1600" height="900"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </figure>
+      </div>
+      <div class="hero__gradient" aria-hidden="true"></div>
+    </section>
+
+    <!-- Filters -->
+    <section class="filters" aria-label="Filter articles">
+      <div class="container filters__inner">
+        <div class="filters__scroller" role="tablist" aria-label="Categories">
+          <button role="tab" aria-selected="true" data-filter="all" class="chip is-active">All</button>
+          <button role="tab" aria-selected="false" data-filter="design" class="chip">Design</button>
+          <button role="tab" aria-selected="false" data-filter="strategy" class="chip">Strategy</button>
+          <button role="tab" aria-selected="false" data-filter="branding" class="chip">Branding</button>
+          <button role="tab" aria-selected="false" data-filter="development" class="chip">Development</button>
+          <button role="tab" aria-selected="false" data-filter="culture" class="chip">Culture</button>
+        </div>
+        <div class="filters__meta">
+          <span class="count"><strong id="resultsCount">8</strong> articles</span>
+          <button class="sort" data-sort="newest" aria-pressed="true">Newest</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Posts grid -->
+    <section class="posts">
+      <div class="container posts__grid" id="postsGrid">
+        <!-- Featured -->
+        <article class="post-card post-card--featured reveal" data-category="strategy" data-tags="growth research analytics">
+          <a href="#" class="post-card__link" aria-label="Read article">
+            <figure class="post-card__media">
+              <img
+                class="lazy"
+                src="https://picsum.photos/seed/feature1/1200/800"
+                srcset="
+                  https://picsum.photos/seed/feature1/600/400 600w,
+                  https://picsum.photos/seed/feature1/900/600 900w,
+                  https://picsum.photos/seed/feature1/1200/800 1200w
+                "
+                sizes="(min-width: 1200px) 66vw, 100vw"
+                loading="lazy" decoding="async" alt="Featured article image" width="1200" height="800"
+              />
+            </figure>
+            <div class="post-card__content">
+              <span class="post-card__cat">Strategy</span>
+              <h2 class="post-card__title">Navigating digital growth in uncertain markets</h2>
+              <p class="post-card__excerpt">A practical framework to prioritize initiatives, validate bets, and ship value faster.</p>
+              <div class="post-card__meta">
+                <span>8 min read</span>
+                <time datetime="2025-05-15">May 15, 2025</time>
+              </div>
+            </div>
+          </a>
+        </article>
+
+        <!-- Standard cards -->
+        <article class="post-card reveal" data-category="design" data-tags="ux ui accessibility motion">
+          <a href="#" class="post-card__link">
+            <figure class="post-card__media">
+              <img class="lazy" src="https://picsum.photos/seed/d1/800/600" srcset="https://picsum.photos/seed/d1/400/300 400w, https://picsum.photos/seed/d1/800/600 800w" sizes="(min-width: 900px) 33vw, 50vw" loading="lazy" decoding="async" alt="Design article image" width="800" height="600"/>
+            </figure>
+            <div class="post-card__content">
+              <span class="post-card__cat">Design</span>
+              <h3 class="post-card__title">Design systems that scale without the bloat</h3>
+              <div class="post-card__meta"><span>6 min read</span><time datetime="2025-04-02">Apr 2, 2025</time></div>
+            </div>
+          </a>
+        </article>
+
+        <article class="post-card reveal" data-category="branding" data-tags="identity voice logo guidelines">
+          <a href="#" class="post-card__link">
+            <figure class="post-card__media">
+              <img class="lazy" src="https://picsum.photos/seed/b1/800/600" srcset="https://picsum.photos/seed/b1/400/300 400w, https://picsum.photos/seed/b1/800/600 800w" sizes="(min-width: 900px) 33vw, 50vw" loading="lazy" decoding="async" alt="Branding article image" width="800" height="600"/>
+            </figure>
+            <div class="post-card__content">
+              <span class="post-card__cat">Branding</span>
+              <h3 class="post-card__title">From vision to visuals: building a resilient brand</h3>
+              <div class="post-card__meta"><span>5 min read</span><time datetime="2025-03-12">Mar 12, 2025</time></div>
+            </div>
+          </a>
+        </article>
+
+        <article class="post-card reveal" data-category="development" data-tags="performance lighthouse vite react">
+          <a href="#" class="post-card__link">
+            <figure class="post-card__media">
+              <img class="lazy" src="https://picsum.photos/seed/dev1/800/600" srcset="https://picsum.photos/seed/dev1/400/300 400w, https://picsum.photos/seed/dev1/800/600 800w" sizes="(min-width: 900px) 33vw, 50vw" loading="lazy" decoding="async" alt="Development article image" width="800" height="600"/>
+            </figure>
+            <div class="post-card__content">
+              <span class="post-card__cat">Development</span>
+              <h3 class="post-card__title">Front-end performance playbook for 2025</h3>
+              <div class="post-card__meta"><span>9 min read</span><time datetime="2025-02-19">Feb 19, 2025</time></div>
+            </div>
+          </a>
+        </article>
+
+        <article class="post-card reveal" data-category="culture" data-tags="remote collaboration leadership teams">
+          <a href="#" class="post-card__link">
+            <figure class="post-card__media">
+              <img class="lazy" src="https://picsum.photos/seed/c1/800/600" srcset="https://picsum.photos/seed/c1/400/300 400w, https://picsum.photos/seed/c1/800/600 800w" sizes="(min-width: 900px) 33vw, 50vw" loading="lazy" decoding="async" alt="Culture article image" width="800" height="600"/>
+            </figure>
+            <div class="post-card__content">
+              <span class="post-card__cat">Culture</span>
+              <h3 class="post-card__title">Rituals that keep hybrid teams creative</h3>
+              <div class="post-card__meta"><span>4 min read</span><time datetime="2025-02-02">Feb 2, 2025</time></div>
+            </div>
+          </a>
+        </article>
+
+        <article class="post-card reveal" data-category="strategy" data-tags="roadmap product discovery">
+          <a href="#" class="post-card__link">
+            <figure class="post-card__media">
+              <img class="lazy" src="https://picsum.photos/seed/s1/800/600" srcset="https://picsum.photos/seed/s1/400/300 400w, https://picsum.photos/seed/s1/800/600 800w" sizes="(min-width: 900px) 33vw, 50vw" loading="lazy" decoding="async" alt="Strategy article image" width="800" height="600"/>
+            </figure>
+            <div class="post-card__content">
+              <span class="post-card__cat">Strategy</span>
+              <h3 class="post-card__title">Prioritization frameworks that actually ship</h3>
+              <div class="post-card__meta"><span>7 min read</span><time datetime="2025-01-20">Jan 20, 2025</time></div>
+            </div>
+          </a>
+        </article>
+
+        <article class="post-card reveal" data-category="design" data-tags="typography layout grids">
+          <a href="#" class="post-card__link">
+            <figure class="post-card__media">
+              <img class="lazy" src="https://picsum.photos/seed/d2/800/600" srcset="https://picsum.photos/seed/d2/400/300 400w, https://picsum.photos/seed/d2/800/600 800w" sizes="(min-width: 900px) 33vw, 50vw" loading="lazy" decoding="async" alt="Design grids article image" width="800" height="600"/>
+            </figure>
+            <div class="post-card__content">
+              <span class="post-card__cat">Design</span>
+              <h3 class="post-card__title">Editorial grids for the modern web</h3>
+              <div class="post-card__meta"><span>5 min read</span><time datetime="2024-12-01">Dec 1, 2024</time></div>
+            </div>
+          </a>
+        </article>
+
+        <article class="post-card reveal" data-category="branding" data-tags="tone messaging content">
+          <a href="#" class="post-card__link">
+            <figure class="post-card__media">
+              <img class="lazy" src="https://picsum.photos/seed/b2/800/600" srcset="https://picsum.photos/seed/b2/400/300 400w, https://picsum.photos/seed/b2/800/600 800w" sizes="(min-width: 900px) 33vw, 50vw" loading="lazy" decoding="async" alt="Brand voice article image" width="800" height="600"/>
+            </figure>
+            <div class="post-card__content">
+              <span class="post-card__cat">Branding</span>
+              <h3 class="post-card__title">Finding your voice: messaging that resonates</h3>
+              <div class="post-card__meta"><span>6 min read</span><time datetime="2024-11-22">Nov 22, 2024</time></div>
+            </div>
+          </a>
+        </article>
+      </div>
+
+      <div class="container posts__actions">
+        <button id="loadMore" class="btn">Load more</button>
+      </div>
+
+      <p class="container no-results" id="noResults" hidden>No results. Try a different category or search term.</p>
+    </section>
+
+
+    <!-- Contact -->
+    <section id="contact" class="contact">
+      <div class="container contact__inner reveal">
+        <h2></h2>
+        <p>GET IN TOUCH</p>
+        <a href="mailto:hello@yourbrand.com" class="btn">hello@baunfire.com</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer__inner">
+      <ul class="social">
+        <li><a href="#" aria-label="X / Twitter">Twitter</a></li>
+        <li><a href="#" aria-label="LinkedIn">LinkedIn</a></li>
+        <li><a href="#" aria-label="Dribbble">Dribbble</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script>
+     /* Helpers */
+const $ = (sel, ctx = document) => ctx.querySelector(sel);
+const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+
+/* Mobile nav */
+const navToggle = $('.nav__toggle');
+const navList = $('#primary-menu');
+if (navToggle && navList) {
+  navToggle.addEventListener('click', () => {
+    const open = navList.classList.toggle('is-open');
+    navToggle.setAttribute('aria-expanded', String(open));
+  });
+  document.addEventListener('click', (e) => {
+    if (!navList.contains(e.target) && !navToggle.contains(e.target)) {
+      navList.classList.remove('is-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
+
+/* Theme toggle */
+const themeBtn = $('.theme-toggle');
+if (themeBtn) {
+  const root = document.documentElement;
+  const saved = localStorage.getItem('theme');
+  if (saved) root.setAttribute('data-theme', saved);
+  themeBtn.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    root.setAttribute('data-theme', next);
+    themeBtn.setAttribute('aria-pressed', String(next === 'dark'));
+    localStorage.setItem('theme', next);
+  });
+}
+
+/* Scroll progress */
+const progressBar = $('.scroll-progress .bar');
+function setProgress() {
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+  if (progressBar) progressBar.style.width = pct + '%';
+}
+window.addEventListener('scroll', setProgress, { passive: true });
+window.addEventListener('resize', setProgress);
+setProgress();
+
+/* Reveal-on-scroll */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('is-inview');
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+$$('.reveal').forEach(el => io.observe(el));
+
+/* Blur-up images */
+$$('img.lazy').forEach(img => {
+  if (img.complete) img.classList.add('is-loaded');
+  img.addEventListener('load', () => img.classList.add('is-loaded'));
+});
+
+/* Filters + search + sort */
+const chips = $$('.chip');
+const postsGrid = $('#postsGrid');
+const posts = () => $$('.post-card', postsGrid);
+const resultsCount = $('#resultsCount');
+const noResults = $('#noResults');
+
+let activeCategory = 'all';
+let searchTerm = '';
+let sortOrder = 'newest';
+
+const supportsVT = typeof document.startViewTransition === 'function';
+function withViewTransition(fn) {
+  if (!supportsVT) return fn();
+  try { document.startViewTransition(fn); } catch { fn(); }
+}
+
+function normalize(str){ return (str || '').toLowerCase(); }
+
+function applyFilters() {
+  withViewTransition(() => {
+    let visible = 0;
+    posts().forEach(card => {
+      const cat = card.dataset.category || '';
+      const tags = card.dataset.tags || '';
+      const title = $('.post-card__title', card)?.textContent || '';
+      const haystack = normalize([cat, tags, title].join(' '));
+
+      const matchesCategory = activeCategory === 'all' || normalize(cat) === activeCategory;
+      const matchesSearch = haystack.includes(normalize(searchTerm));
+
+      const show = matchesCategory && matchesSearch;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    if (resultsCount) resultsCount.textContent = String(visible);
+    if (noResults) noResults.hidden = visible !== 0;
+
+    sortPosts(); // keep sorted after filtering
+  });
+}
+
+chips.forEach(chip => {
+  chip.addEventListener('click', () => {
+    chips.forEach(c => { c.classList.remove('is-active'); c.setAttribute('aria-selected', 'false'); });
+    chip.classList.add('is-active');
+    chip.setAttribute('aria-selected', 'true');
+    activeCategory = chip.dataset.filter || 'all';
+    applyFilters();
+  });
+});
+
+const searchInput = $('#search');
+const searchClear = $('.search__clear');
+let searchDebounce;
+if (searchInput) {
+  searchInput.addEventListener('input', () => {
+    clearTimeout(searchDebounce);
+    searchDebounce = setTimeout(() => {
+      searchTerm = searchInput.value.trim();
+      applyFilters();
+    }, 150);
+  });
+}
+if (searchClear) {
+  searchClear.addEventListener('click', () => {
+    if (!searchInput) return;
+    searchInput.value = '';
+    searchTerm = '';
+    applyFilters();
+    searchInput.focus();
+  });
+}
+
+/* Sort */
+const sortBtn = $('.sort');
+function sortPosts() {
+  withViewTransition(() => {
+    const items = posts()
+      .filter(el => el.style.display !== 'none')
+      .sort((a, b) => {
+        const da = new Date($('time', a)?.getAttribute('datetime') || 0).getTime();
+        const db = new Date($('time', b)?.getAttribute('datetime') || 0).getTime();
+        return sortOrder === 'newest' ? db - da : da - db;
+      });
+    items.forEach(el => postsGrid.appendChild(el));
+  });
+}
+if (sortBtn) {
+  sortBtn.addEventListener('click', () => {
+    sortOrder = sortOrder === 'newest' ? 'oldest' : 'newest';
+    sortBtn.dataset.sort = sortOrder;
+    sortBtn.setAttribute('aria-pressed', String(sortOrder === 'newest'));
+    sortBtn.textContent = sortOrder === 'newest' ? 'Newest' : 'Oldest';
+    sortPosts();
+  });
+}
+
+/* Load more (demo content) */
+const loadMoreBtn = $('#loadMore');
+if (loadMoreBtn) {
+  let seed = 1000;
+  loadMoreBtn.addEventListener('click', () => {
+    const more = createDemoCards(6, seed);
+    seed += 6;
+    withViewTransition(() => {
+      more.forEach(card => {
+        card.classList.add('reveal');
+        postsGrid.appendChild(card);
+        io.observe(card);
+        $$('img.lazy', card).forEach(img => {
+          if (img.complete) img.classList.add('is-loaded');
+          img.addEventListener('load', () => img.classList.add('is-loaded'));
+        });
+      });
+      applyFilters(); // update counts
+    });
+  });
+}
+
+function createDemoCards(count, startSeed = 1000) {
+  const cats = ['design','strategy','branding','development','culture'];
+  const titles = {
+    design: ['Designing for velocity', 'Grids that guide, not dictate', 'Motion with purpose'],
+    strategy: ['A/B tests that matter', 'Signals over noise', 'From roadmap to outcomes'],
+    branding: ['Dual-tone identities', 'Naming that sticks', 'Brand ops 101'],
+    development: ['Image pipelines that fly', 'Hydration vs. streaming', 'JS you can measure'],
+    culture: ['Feedback as a ritual', 'Ops for creative teams', 'Hiring for potential']
+  };
+  const arr = [];
+  for (let i = 0; i < count; i++) {
+    const cat = cats[i % cats.length];
+    const title = titles[cat][i % titles[cat].length];
+    const seed = startSeed + i;
+    const card = document.createElement('article');
+    card.className = 'post-card';
+    card.dataset.category = cat;
+    card.dataset.tags = `${cat} demo`;
+    card.innerHTML = `
+      <a href="#" class="post-card__link">
+        <figure class="post-card__media">
+          <img class="lazy" src="https://picsum.photos/seed/${seed}/800/600"
+               srcset="https://picsum.photos/seed/${seed}/400/300 400w, https://picsum.photos/seed/${seed}/800/600 800w"
+               sizes="(min-width: 900px) 33vw, 50vw"
+               loading="lazy" decoding="async" alt="${cat} demo image" width="800" height="600" />
+        </figure>
+        <div class="post-card__content">
+          <span class="post-card__cat">${cat.charAt(0).toUpperCase() + cat.slice(1)}</span>
+          <h3 class="post-card__title">${title}</h3>
+          <div class="post-card__meta">
+            <span>${4 + (seed % 6)} min read</span>
+            <time datetime="2024-09-${String((i%28)+1).padStart(2,'0')}">Sep ${(i%28)+1}, 2024</time>
+          </div>
+        </div>
+      </a>
+    `;
+    arr.push(card);
+  }
+  return arr;
+}
+
+/* Smooth in-page scroll for [data-scroll] */
+$$('a[data-scroll]').forEach(a => {
+  a.addEventListener('click', (e) => {
+    const href = a.getAttribute('href');
+    if (!href || !href.startsWith('#')) return;
+    e.preventDefault();
+    const el = $(href);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+/* Prefetch on hover (same-origin links) */
+document.addEventListener('mouseover', (e) => {
+  const a = e.target.closest('a[href]');
+  if (!a) return;
+  const url = new URL(a.href, location.href);
+  if (url.origin !== location.origin) return;
+  if (document.querySelector(`link[rel="prefetch"][href="${url.href}"]`)) return;
+  const link = document.createElement('link');
+  link.rel = 'prefetch';
+  link.href = url.href;
+  document.head.appendChild(link);
+});
+
+/* Footer year */
+const yearEl = $('#year');
+if (yearEl) yearEl.textContent = String(new Date().getFullYear());
+  </script>
+</body>
+</html>

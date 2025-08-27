@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title> Ambi Robotics-Baunfire</title>
+  <meta name="theme-color" content="#0b0b0f" />
+
+  <style>
+    :root{
+      --bg:#0b0b0f;
+      --surface:#111118;
+      --surface-2:#161621;
+      --text:#f2f3f6;
+      --muted:#a8adbd;
+      --accent:#82ffd2;
+      --accent-2:#6f7dff;
+      --danger:#ff6b6b;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 14px;
+      --header-height: 72px; /* updated by JS */
+      --container: clamp(1040px, 82vw, 1240px);
+    }
+    *{box-sizing:border-box}
+    html{
+      color-scheme: dark;
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+      text-rendering: optimizeLegibility;
+    }
+    body{
+      margin:0;
+      background: radial-gradient(1200px 800px at 80% -10%, rgba(111,125,255,.18), transparent 50%),
+                  radial-gradient(900px 600px at -10% 20%, rgba(130,255,210,.12), transparent 50%),
+                  var(--bg);
+      color:var(--text);
+      font-family: ui-sans-serif, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji;
+      line-height:1.45;
+    }
+    img,video{max-width:100%; height:auto; display:block}
+    a{color:inherit; text-decoration:none}
+    .container{max-width:var(--container); margin:0 auto; padding:0 24px}
+    .skip-to-content{
+      position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;
+    }
+    .skip-to-content:focus{
+      left:16px; top:16px; width:auto; height:auto; z-index:9999; padding:10px 14px;
+      background:var(--surface); border-radius:8px; outline:2px solid var(--accent);
+    }
+
+    /* Header */
+    .site-header{
+      position:sticky; top:0; z-index:1000;
+      backdrop-filter:saturate(140%) blur(10px);
+      background:linear-gradient(to bottom, rgba(11,11,15,.85), rgba(11,11,15,.6));
+      border-bottom:1px solid rgba(255,255,255,.06);
+      transition: box-shadow .3s ease, background .3s ease, border-color .3s ease;
+    }
+    .site-header.scrolled{ box-shadow: var(--shadow); background: rgba(11,11,15,.9) }
+    .nav{
+      height:var(--header-height);
+      display:flex; align-items:center; justify-content:space-between; gap:16px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; min-width:0;
+    }
+    .brand img{
+      width:36px; height:36px; object-fit:contain; border-radius:8px;
+      background:linear-gradient(135deg, rgba(130,255,210,.2), rgba(111,125,255,.2));
+    }
+    .brand .name{
+      font-weight:800; letter-spacing:.2px;
+      font-size: clamp(16px, 2vw, 18px);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+    }
+    .nav-links{
+      display:flex; align-items:center; gap:24px;
+    }
+    .nav-links a{
+      color:var(--muted); font-weight:600; font-size:14px; letter-spacing:.2px;
+      padding:10px 6px; border-radius:8px; position:relative;
+    }
+    .nav-links a:hover{ color:var(--text) }
+    .nav-links a.active{
+      color:var(--text);
+    }
+    .nav-links a.active::after{
+      content:""; position:absolute; left:0; right:0; bottom:-6px; height:2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      border-radius:2px;
+    }
+    .cta{
+      padding:10px 14px; border-radius:999px; font-weight:700; font-size:14px;
+      color:#0b0b0f; background:linear-gradient(135deg, var(--accent), var(--accent-2));
+      border:none; cursor:pointer;
+    }
+    /* Mobile menu */
+    .menu-toggle{
+      display:none; width:42px; height:42px; border-radius:10px;
+      border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.04);
+      color:var(--text); cursor:pointer;
+    }
+    @media (max-width: 900px){
+      .nav-links{ display:none }
+      .menu-toggle{ display:inline-flex; align-items:center; justify-content:center }
+      .mobile-drawer{
+        position: fixed; inset: 72px 12px 12px 12px; z-index:999;
+        background: linear-gradient(180deg, rgba(17,17,24,.98), rgba(17,17,24,.94));
+        border: 1px solid rgba(255,255,255,.08); border-radius:16px; padding:18px;
+        display:none; flex-direction:column; gap:8px;
+        box-shadow: var(--shadow);
+      }
+      .mobile-drawer.open{ display:flex }
+      .mobile-drawer a{
+        padding:14px 10px; border-radius:10px; color:var(--muted); font-weight:700;
+      }
+      .mobile-drawer a:hover{ background:rgba(255,255,255,.04); color:var(--text) }
+    }
+
+    /* Sections */
+    section{ padding: clamp(56px, 10vw, 120px) 0; scroll-margin-top: calc(var(--header-height) + 16px); content-visibility: auto; contain-intrinsic-size: 0 600px; }
+    .eyebrow{
+      display:inline-flex; align-items:center; gap:8px; font-size:12px; letter-spacing:.24em;
+      text-transform:uppercase; color:var(--muted); font-weight:800; margin-bottom:16px;
+    }
+    .eyebrow::before{
+      content:""; width:28px; height:2px; background: linear-gradient(90deg, var(--accent), transparent);
+      border-radius:2px;
+    }
+
+    /* Hero */
+    .hero{
+      position:relative; overflow:hidden;
+    }
+    .hero .container{ display:grid; grid-template-columns:1.2fr .8fr; gap:clamp(24px, 4vw, 48px); align-items:center }
+    @media (max-width: 900px){ .hero .container{ grid-template-columns:1fr } }
+    .headline{
+      font-weight:900; line-height:1.05;
+      font-size: clamp(32px, 7.5vw, 76px);
+      letter-spacing:-.02em;
+      margin:0 0 16px;
+      background: linear-gradient(135deg, #fff, #cfd6ff 40%, #d4fff0 80%);
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+    }
+    .subhead{ color:var(--muted); font-size: clamp(16px, 1.6vw, 20px); max-width: 60ch }
+    .hero-cta{ display:flex; align-items:center; gap:12px; margin-top:24px; flex-wrap:wrap }
+    .ghost{
+      padding:10px 14px; border-radius:999px; font-weight:700; font-size:14px;
+      color:var(--text); background:transparent; border:1px solid rgba(255,255,255,.18);
+      cursor:pointer;
+    }
+    .hero-visual{
+      position:relative; aspect-ratio: 4/3; border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(130,255,210,.12), rgba(111,125,255,.12));
+      border:1px solid rgba(255,255,255,.08);
+      overflow:hidden;
+    }
+    .orb{
+      position:absolute; inset:-20% -20% auto auto; width:70%; height:140%;
+      background: radial-gradient(closest-side, rgba(111,125,255,.28), transparent 70%);
+      filter: blur(28px); transform: translate3d(0,0,0);
+      pointer-events:none;
+      animation: float 12s ease-in-out infinite alternate;
+    }
+    @keyframes float{
+      0%{ transform: translate(0,0) }
+      100%{ transform: translate(-5%, 4%) }
+    }
+    .hero-video{
+      position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.9;
+    }
+
+    /* Intro */
+    .intro .content{
+      display:grid; grid-template-columns: .8fr 1.2fr; gap: clamp(24px, 4vw, 48px);
+    }
+    @media (max-width: 900px){ .intro .content{ grid-template-columns: 1fr } }
+    .kpi{
+      display:grid; grid-template-columns: repeat(3, minmax(120px, 1fr)); gap:16px; margin-top:24px;
+    }
+    .kpi .card{
+      background:var(--surface); border:1px solid rgba(255,255,255,.06); border-radius:12px; padding:16px;
+    }
+    .kpi .value{ font-weight:900; font-size: clamp(22px, 4.2vw, 40px) }
+    .kpi .label{ color:var(--muted); font-size:12px; letter-spacing:.08em; text-transform:uppercase }
+
+    /* Services / Products */
+    .grid{
+      display:grid; gap:16px;
+      grid-template-columns: repeat(12, 1fr);
+    }
+    .card{
+      background:linear-gradient(180deg, rgba(22,22,33,.9), rgba(16,16,24,.9));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:16px; padding:22px;
+      transition: transform .24s ease, border-color .24s ease, background .24s ease;
+    }
+    .card:hover{ transform: translateY(-4px); border-color: rgba(255,255,255,.16) }
+    .services .card{ grid-column: span 4; min-height: 220px; display:flex; flex-direction:column; justify-content:space-between }
+    @media (max-width: 1100px){ .services .card{ grid-column: span 6 } }
+    @media (max-width: 720px){ .services .card{ grid-column: span 12 } }
+    .chip{
+      display:inline-flex; align-items:center; gap:8px; font-size:12px; font-weight:700;
+      padding:8px 10px; border-radius:999px; color:#0b0b0f;
+      background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    }
+    .card h3{ margin:12px 0 8px }
+    .card p{ margin:0; color:var(--muted) }
+    .card .arrow{
+      width:38px; height:38px; border-radius:10px; display:inline-flex; align-items:center; justify-content:center;
+      border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.04)
+    }
+
+    /* Featured work (or product highlights) */
+    .work .item{
+      grid-column: span 6; overflow:hidden; padding:0; display:flex; flex-direction:column;
+    }
+    @media (max-width: 900px){ .work .item{ grid-column: span 12 } }
+    .thumb{
+      position:relative; overflow:hidden; border-radius: 16px 16px 0 0; aspect-ratio: 16/9;
+      background:linear-gradient(135deg, rgba(130,255,210,.1), rgba(111,125,255,.12));
+    }
+    .thumb img{ width:100%; height:100%; object-fit:cover; filter:saturate(1.05) contrast(1.05) }
+    .item .body{ padding:18px 18px 22px }
+    .tag{ color:var(--muted); font-size:12px; letter-spacing:.08em; text-transform:uppercase }
+    .title{ font-weight:800; font-size: clamp(18px, 2.4vw, 24px); margin:6px 0 0 }
+
+    /* Video section */
+    .video .player{
+      position:relative; border-radius:16px; overflow:hidden;
+      border:1px solid rgba(255,255,255,.08); background:var(--surface);
+    }
+    .video .player .overlay{
+      position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+      background:linear-gradient(180deg, rgba(11,11,15,.0), rgba(11,11,15,.3));
+      pointer-events:none;
+    }
+    .video .player .badge{
+      position:absolute; top:12px; left:12px; z-index:1;
+      padding:8px 10px; border-radius:10px; background:rgba(255,255,255,.08); font-size:12px; font-weight:700;
+      backdrop-filter: blur(6px);
+    }
+
+    /* Contact */
+    .contact .cols{
+      display:grid; grid-template-columns: .9fr 1.1fr; gap:24px;
+    }
+    @media (max-width: 900px){ .contact .cols{ grid-template-columns:1fr } }
+    .contact .details{
+      background:var(--surface); border:1px solid rgba(255,255,255,.08);
+      border-radius:16px; padding:18px;
+    }
+    .stack{ display:flex; flex-direction:column; gap:12px; }
+    .stack a{ color:var(--text) }
+    .contact form{
+      background:var(--surface); border:1px solid rgba(255,255,255,.08);
+      border-radius:16px; padding:18px; display:grid; grid-template-columns:1fr 1fr; gap:12px;
+    }
+    .contact form .full{ grid-column:1 / -1 }
+    label{ font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted) }
+    input, textarea{
+      margin-top:6px; width:100%; padding:12px 12px; border-radius:10px;
+      border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.03); color:var(--text);
+      font-size:14px;
+    }
+    textarea{ min-height:120px; resize:vertical }
+    .note{ color:var(--muted); font-size:12px }
+    .form-actions{ display:flex; justify-content:flex-end; gap:12px; }
+    .success{ color:#86f3c0; display:none }
+    .error{ color:var(--danger); display:none }
+
+    /* Footer */
+    footer{
+      padding:32px 0 56px; color:var(--muted);
+    }
+    .footer-inner{
+      display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+      border-top:1px solid rgba(255,255,255,.06); padding-top:18px;
+    }
+
+    /* Scroll reveal */
+    .reveal{ opacity:0; transform: translateY(16px); transition: opacity .7s ease, transform .7s ease; will-change:transform, opacity }
+    .reveal.in{ opacity:1; transform: none }
+
+    /* Back to top */
+    .to-top{
+      position:fixed; right:16px; bottom:16px; z-index:999; opacity:0; transform: translateY(10px);
+      pointer-events:none; transition: opacity .25s ease, transform .25s ease;
+      border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.05); color:var(--text);
+      width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center;
+    }
+    .to-top.show{ opacity:1; transform:none; pointer-events:auto }
+
+    /* Respect reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration: 0.001ms !important; scroll-behavior:auto !important }
+    }
+
+  </style>
+</head>
+<body>
+
+  <header class="site-header" id="site-header" role="banner" aria-label="Site header">
+    <div class="container nav">
+      <div class="brand">
+        <div class="name"><a href="index.html">BAUNFIRE</a></div>
+      </div>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="work.html">Work</a>
+        <a href="services.html">Services</a>
+        <a href="letstalk.html">Contact</a>
+        <button class="cta" onclick="document.querySelector('#contact').scrollIntoView({behavior:'smooth'})">Get in touch</button>
+      </nav>
+      <button class="menu-toggle" aria-label="Open menu" aria-controls="mobile-drawer" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section id="hero" class="hero">
+      <div class="container">
+        <div class="copy">
+          <span class="eyebrow"> CASE STUDY</span>
+          <h1 class="headline reveal">
+            Ambi Robotics
+          </h1>
+          <span>SERVICES</span>
+          <p class="subhead reveal">
+            Website Design & Development
+          </p>
+          <span>ROLE</span>
+          <p class="subhead reveal">
+            Design Direction Content Strategy Animations & Interactions
+          </p>
+        </div>
+        <div class="hero-visual reveal" aria-label="Featured visual">
+          <div class="orb"></div>
+          <!-- Optional: placeholder video loop, replace source with your snippet or hero motion -->
+          <img src="https://images.ctfassets.net/eqb1x10m46e1/3U48klc4HiiM48JgiW0vlG/dd78e2c9c2c73592c8176969309f191f/Baunfire_Case_Study_-_Ambi_Robotics_-_Hero_Image.png">
+      </div>
+    </section>
+
+    <!-- Intro -->
+    <section id="intro" class="intro">
+      <div class="container">
+        <div class="content">
+          <div class="reveal">
+            <span class="eyebrow"></span>
+            <h2 style="margin:0 0 12px; font-size: clamp(24px, 4vw, 40px); line-height:1.1">AI-powered robotics that empower employees to work smarter and safer</h2><br>
+            <p style="color:var(--muted); max-width:60ch">
+                Ambi Robotics is a pioneer in AI-powered robotic parcel sorting solutions for shipping, ecommerce, and logistics, collaborating with global brands to increase operational resilience. With its line of automated robotic sorting systems, Ambi Robotics is creating tools that empower people to tackle the supply chain's most complex problems.
+            <br><br>
+            Based in Berkeley, California, their ambitious team reached out to us to help reimagine their web & digital brand presence and establish their company as a leader in the industry. The result — a redesigned corporate website experience that drove user engagement, delighted visitors, and streamlined the path to conversion for customers.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <img src="https://images.ctfassets.net/eqb1x10m46e1/RM9pDf9yM2gQ2DDuSCCpC/9fc7981637bab237362429e1935a365c/Baunfire_Case_Study_-_Ambi_Robotics_-_Lifestyle_Image_A.png">
+    <br><br>
+    <img src="https://downloads.ctfassets.net/eqb1x10m46e1/6qvtvH3GoMfEUqfgimr14p/9dcaa7e3371179d85000418b2ccb8356/Baunfire_Case_Study_Ambi_Robotics_Hero_Animation.gif">
+
+    <section id="intro" class="intro">
+      <div class="container">
+        <div class="content">
+          <div class="reveal">
+            <span class="eyebrow"></span>
+            <h2 style="margin:0 0 12px; font-size: clamp(24px, 4vw, 40px); line-height:1.1">Enhanced product storytelling, brought to life with motion
+            </h2><br>
+            <p style="color:var(--muted); max-width:60ch">
+                The reimagined Ambi Robotics website showcases elevated visuals, such as high-quality product & lifestyle photography, sleek videography, polished motion graphics, and delightful microinteractions — all while maintaining efficient page load speeds and sharp image quality. Together, these elements enhance product & brand storytelling across the site, leaving a lasting impression on new visitors and prospective customers.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <img src="https://downloads.ctfassets.net/eqb1x10m46e1/D0PHOCXStD7u6NhTu6Mzm/53d76dd1474e036d6e9639a484556ea4/Baunfire_Case_Study_Ambi_Robotics_Handle_More_Animation.gif">
+    
+    <section id="hero" class="hero">
+      <div class="container">
+        <div class="copy">
+          <h1 class="headline reveal">
+            Thoughtful tech that improves the human experience
+          </h1>
+          <p class="subhead reveal">
+            With its commitment to helping warehouse workers be their best, it was key to create a visual language and design system for Ambi Robotics that demonstrated how humans and machines thrive in tandem. Through thoughtful discovery and collaboration, we developed a cohesive design direction and content strategy that stayed true to the brand’s mission and values
+          </p>
+        </div>
+       <img src="https://images.ctfassets.net/eqb1x10m46e1/b4X4Dkyrn4jDgsJdxhFTh/daf6e1a819fd2ac727af08f4234b07b5/Baunfire_Case_Study_-_Ambi_Robotics_-_Desktop_Design_A.png">
+      </div> 
+    </section>
+
+    <img src="https://images.ctfassets.net/eqb1x10m46e1/74d7K3qbCMcNTTzTssZBBv/fe21b236e5ab120a78d5e7a5806d8160/Baunfire_Case_Study_-_Ambi_Robotics_-_Desktop_Design_B2.png">
+    
+    <img src="https://images.ctfassets.net/eqb1x10m46e1/6oXSZIN9TuMSXItW1He6Wi/874ec08253c63fca402b0a6ac983b991/Baunfire_Case_Study_-_Ambi_Robotics_-_Lifestyle_Image_B.png">
+
+    <section id="intro" class="intro">
+      <div class="container">
+        <div class="content">
+          <div class="reveal">
+            <span class="eyebrow"></span>
+            <h2 style="margin:0 0 12px; font-size: clamp(24px, 4vw, 40px); line-height:1.1">A modern and memorable palette</h2><br>
+            <p style="color:var(--muted); max-width:60ch">
+                The new ambirobotics.com champions the brand's bold color palette throughout; intentional application to CTAs and other key areas help encourage exploration across the site.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <img src="https://images.ctfassets.net/eqb1x10m46e1/60Qy2sZPJTT4LQWapzXFKe/60b1cad2aa674fee54aaf53d39689789/Baunfire_Case_Study_-_Ambi_Robotics_-_Color_Palette.png">
+
+    <section id="intro" class="intro">
+      <div class="container">
+        <div class="content">
+          <div class="reveal">
+            <span class="eyebrow"></span>
+            <h2 style="margin:0 0 12px; font-size: clamp(24px, 4vw, 40px); line-height:1.1">Sophisticated yet approachable typography
+            </h2><br>
+            <p style="color:var(--muted); max-width:60ch">
+                A pairing of clean sans-serif fonts provide a sense of helpfulness and simplicity, juxtaposed with the complex challenges that the brand's advanced technology is equipped to solve.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <img src="https://images.ctfassets.net/eqb1x10m46e1/4yZFHEKaJwbx1HGjrCKL2h/59a0580bb62f05fc2d0f0af636d04752/Baunfire_Case_Study_-_Ambi_Robotics_-_Typography.png">
+
+    <section id="hero" class="hero">
+      <div class="container">
+        <div class="copy">
+          <h2 class="subhead reveal">An uncompromising mobile experience</h2><br>
+          <p class="subhead reveal">
+            To ensure an effective and seamless browsing experience on mobile devices, our creative and technical teams worked together to deliver best-in-class performance without compromising overall impact.
+          </p>
+        </div>
+       <img src="https://images.ctfassets.net/eqb1x10m46e1/7BVKWxyaxt7ZgproGnJsce/8059dc089b7d19c387cdb36f34818ad6/Baunfire_Case_Study_-_Ambi_Robotics_-_Mobile_Design_B.png">
+      </div> 
+    </section>
+
+    <!-- Featured Work / Product Highlights -->
+    <section id="work" class="work">
+      <div class="container">
+        <span class="eyebrow">WORK</span>
+        <div class="grid">
+          <article class="card item reveal">
+            <div class="thumb">
+              <img loading="lazy" alt="Project cover placeholder"
+                   src="https://images.ctfassets.net/eqb1x10m46e1/759SwxgRVQA6dvTRf1yef7/2c0885221dc099bef4816339454f2b91/Listing_Thumbnail_Drak.png?w=1260&h=1683&q=90&fm=webp" />
+            </div>
+            <div class="body">
+              <div class="tag">corporate website</div>
+              <div class="title">Instabase</div>
+            </div>
+          </article>
+          <article class="card item reveal">
+            <div class="thumb">
+              <img loading="lazy" alt="Project cover placeholder"
+                   src="https://images.ctfassets.net/eqb1x10m46e1/4mEGXgt1ZbAULLNGBxylr9/8d0b75b0443d2b0866e690d8b2e5594a/Baunfire_CaseStudy_Incorta_CorporateB2BWebsite_Thumbnail_A.png?w=840&h=1122&q=90&fm=webp" />
+            </div>
+            <div class="body">
+              <div class="tag">corporate website</div>
+              <div class="title">Incorta</div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+    <!-- Contact -->
+    <section id="contact" class="contact">
+      <div class="container">
+        <span class="eyebrow">Contact</span>
+        <div class="cols">
+          <div class="details reveal">
+            <h3 style="margin:6px 0 8px"> BAUNFIRE</h3>
+            <div class="stack">
+              <div>75 E Santa Clara St, Ste 1425 San Jose, California 95113</div>
+              <a href="#">hello@baunfire.com</a>
+              <a href="tel:<!-- TODO: phone -->">(404) 889 9889</a>
+              <div class="note">Mon–Fri · 9am–5pm</div>
+              <div style="display:flex; gap:10px; margin-top:6px">
+                <a href="#" aria-label="LinkedIn">LinkedIn</a>
+                <a href="#" aria-label="Twitter">Twitter/X</a>
+                <a href="#" aria-label="Instagram">Instagram</a>
+              </div>
+            </div>
+          </div>
+          <form id="contact-form" class="reveal" novalidate>
+            <div>
+              <label for="name">Name</label>
+              <input id="name" name="name" autocomplete="name" placeholder="Your name" required />
+            </div>
+            <div>
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" autocomplete="email" placeholder="you@company.com" required />
+            </div>
+            <div class="full">
+              <label for="subject">Subject</label>
+              <input id="subject" name="subject" placeholder="What can we help with?" />
+            </div>
+            <div class="full">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="Tell us about your project..." required></textarea>
+            </div>
+            <div class="full form-actions">
+              <span class="success" id="success">Thanks! We’ll be in touch.</span>
+              <span class="error" id="error">Something went wrong. Please try again.</span>
+              <button type="submit" class="cta">Send message</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <button class="to-top" id="to-top" aria-label="Back to top">↑</button>
+
+  <script>
+    // Utility: set CSS var for header height to support scroll-margin offset
+    const header = document.getElementById('site-header');
+    const setHeaderHeight = () => {
+      document.documentElement.style.setProperty('--header-height', header.offsetHeight + 'px');
+    };
+    setHeaderHeight();
+    window.addEventListener('resize', setHeaderHeight);
+
+    // Sticky header shadow & back-to-top
+    const toTop = document.getElementById('to-top');
+    const onScroll = () => {
+      const y = window.scrollY || document.documentElement.scrollTop;
+      header.classList.toggle('scrolled', y > 8);
+      toTop.classList.toggle('show', y > 600);
+    };
+    document.addEventListener('scroll', onScroll, { passive:true });
+    toTop.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+
+    // Mobile drawer
+    const toggleBtn = document.querySelector('.menu-toggle');
+    const drawer = document.getElementById('mobile-drawer');
+    toggleBtn?.addEventListener('click', () => {
+      const open = drawer.classList.toggle('open');
+      toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    drawer?.addEventListener('click', (e) => {
+      if(e.target.tagName === 'A'){ drawer.classList.remove('open'); toggleBtn.setAttribute('aria-expanded','false'); }
+    });
+
+    // Scroll reveal
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!prefersReduced && 'IntersectionObserver' in window){
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            entry.target.classList.add('in');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    } else {
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+    }
+
+    // Active nav link highlighting
+    const navLinks = Array.from(document.querySelectorAll('.nav-links a'));
+    const sections = Array.from(document.querySelectorAll('main section[id]'));
+    if ('IntersectionObserver' in window){
+      const navIO = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            const id = entry.target.id;
+            navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+          }
+        });
+      }, { rootMargin: '-40% 0px -55% 0px', threshold: 0.01 });
+      sections.forEach(sec => navIO.observe(sec));
+    }
+
+    // Auto play/pause video when in view
+    const showreel = document.getElementById('showreel');
+    if (showreel && 'IntersectionObserver' in window){
+      const vIO = new IntersectionObserver(([entry]) => {
+        if (entry.isIntersecting && showreel.paused && showreel.autoplay !== true) {
+          // don't auto-play if user hasn't interacted; keep controls on
+          // You can choose to auto-play muted:
+          // showreel.muted = true; showreel.play().catch(()=>{});
+        } else if (!entry.isIntersecting && !showreel.paused) {
+          showreel.pause();
+        }
+      }, { threshold: 0.25 });
+      vIO.observe(showreel);
+    }
+
+    // Contact form (demo only — replace with your backend)
+    const form = document.getElementById('contact-form');
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const success = document.getElementById('success');
+      const error = document.getElementById('error');
+      success.style.display = 'none'; error.style.display = 'none';
+
+      // Simple validation
+      const data = Object.fromEntries(new FormData(form).entries());
+      if(!data.name || !data.email || !data.message){
+        error.textContent = 'Please fill in the required fields.'; error.style.display='inline';
+        return;
+      }
+      try {
+        // TODO: Replace with your API endpoint
+        // await fetch('/api/contact', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data) });
+        await new Promise(r => setTimeout(r, 600)); // simulate
+        form.reset();
+        success.style.display = 'inline';
+      } catch (err) {
+        error.textContent = 'Something went wrong. Please try again.'; error.style.display='inline';
+      }
+    });
+
+    // Set year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

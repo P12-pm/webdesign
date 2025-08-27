@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Baunfire — Work</title>
+  <meta name="description" content="Brief intro about your brand and what you do. Replace this with your own copy.">
+  <meta name="color-scheme" content="dark light">
+
+  <!-- System font stack for performance -->
+  <style>
+    :root {
+      --brand: #ff4d00;              /* Accent color — change to your brand */
+      --bg: #0d0d0f;                 /* Background */
+      --surface: #141418;            /* Card/section background */
+      --text: #e8e8ea;               /* Primary text */
+      --muted: #a5a5ad;              /* Secondary text */
+      --border: #2a2a33;
+      --maxw: 1200px;
+      --gap: clamp(12px, 2vw, 24px);
+      --radius: 14px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --t: .45s cubic-bezier(.22,1,.36,1);
+      --header-h: 72px;
+    }
+
+    /* Reset + base */
+    *,*::before,*::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji;
+      background: radial-gradient(1200px 800px at 10% -20%, #181822 0%, #0d0d0f 55%) fixed;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    img,svg { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; color: inherit; background: none; border: none; padding: 0; cursor: pointer; }
+    .container { max-width: var(--maxw); margin-inline: auto; padding-inline: clamp(16px, 4vw, 28px); }
+    .section { padding: clamp(48px, 8vw, 100px) 0; content-visibility: auto; contain-intrinsic-size: 600px; }
+    .section h2 { font-size: clamp(1.6rem, 2.8vw, 2.25rem); letter-spacing: .2px; margin: 0 0 1.25rem; }
+    .muted { color: var(--muted); }
+
+    /* Focus styles */
+    :focus-visible {
+      outline: 3px solid color-mix(in oklab, var(--brand) 80%, white);
+      outline-offset: 3px;
+      border-radius: 8px;
+    }
+
+    /* Header */
+    .header {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(12px) saturate(120%);
+      background: color-mix(in oklab, var(--bg) 92%, transparent);
+      border-bottom: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
+    }
+    .nav {
+      height: var(--header-h);
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .brand {
+      display: inline-flex; align-items: center; gap: 12px;
+    }
+    .brand img { height: 28px; width: auto; }
+    .brand__name { font-weight: 700; font-size: 1rem; letter-spacing: .3px; }
+    .nav__links {
+      display: flex; gap: clamp(14px, 2.2vw, 28px);
+      align-items: center;
+    }
+    .nav__links a {
+      font-weight: 600; font-size: .95rem; letter-spacing: .02em; opacity: .9; position: relative;
+    }
+    .nav__links a::after {
+      content: ""; position: absolute; left: 0; bottom: -6px; height: 2px; width: 0;
+      background: var(--brand); transition: width var(--t);
+    }
+    .nav__links a:hover::after { width: 100%; }
+    .nav__cta {
+      padding: 10px 14px; border: 1px solid color-mix(in oklab, var(--brand) 70%, white);
+      border-radius: 999px; font-weight: 700; font-size: .9rem;
+      transition: background var(--t), color var(--t), transform var(--t);
+    }
+    .nav__cta:hover { background: var(--brand); color: #0a0a0a; transform: translateY(-1px); }
+
+    /* Mobile menu */
+    .burger { display: none; width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--border); place-content: center; }
+    .burger svg { width: 22px; height: 22px; }
+    @media (max-width: 900px) {
+      .burger { display: grid; }
+      .nav__links { position: fixed; inset: var(--header-h) 0 auto 0; background: color-mix(in oklab, var(--bg) 96%, black);
+        display: grid; gap: 6px; padding: 18px; transform: translateY(-16px); opacity: 0; pointer-events: none; transition: opacity var(--t), transform var(--t); border-bottom: 1px solid var(--border);
+      }
+      .nav__links.open { transform: translateY(0); opacity: 1; pointer-events: auto; }
+      .nav__cta { justify-self: start; }
+    }
+
+    /* Hero */
+    .hero { min-height: clamp(70vh, 78vh, 86vh); display: grid; place-items: center; text-align: center; }
+    .hero__inner { max-width: 880px; padding-top: 10vh; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: .85rem; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--brand); box-shadow: 0 0 0 6px color-mix(in oklab, var(--brand) 20%, transparent); }
+    .hero h1 { margin: 10px 0 12px; font-size: clamp(2rem, 6vw, 3.6rem); line-height: 1.1; }
+    .hero p { color: var(--muted); font-size: clamp(1rem, 2vw, 1.125rem); margin: 0 auto; max-width: 60ch; }
+    .hero__cta { margin-top: 26px; display: inline-grid; grid-auto-flow: column; gap: 10px; }
+    .btn {
+      border: 1px solid var(--border); background: color-mix(in oklab, var(--surface) 75%, transparent);
+      color: var(--text); padding: 12px 18px; border-radius: 12px; font-weight: 700; letter-spacing: .02em; transition: transform var(--t), background var(--t), border-color var(--t);
+    }
+    .btn:hover { transform: translateY(-2px); border-color: color-mix(in oklab, var(--brand) 65%, var(--border)); }
+    .btn--brand { border-color: color-mix(in oklab, var(--brand) 80%, white); background: color-mix(in oklab, var(--brand) 16%, transparent); color: color-mix(in oklab, var(--brand) 96%, white); }
+    .btn--brand:hover { background: var(--brand); color: #0b0b0b; }
+
+    /* Filters */
+    .filters { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 20px; }
+    .filter { padding: 8px 14px; border-radius: 999px; border: 1px solid var(--border); background: color-mix(in oklab, var(--surface) 70%, transparent); font-weight: 600; font-size: .95rem; color: var(--muted); transition: background var(--t), color var(--t), border-color var(--t); }
+    .filter[aria-pressed="true"] { color: #0a0a0a; background: var(--brand); border-color: transparent; }
+    .filter:hover { border-color: color-mix(in oklab, var(--brand) 40%, var(--border)); color: var(--text); }
+
+    /* Work grid */
+    .work-grid {
+      display: grid; gap: var(--gap);
+      grid-template-columns: repeat(12, 1fr);
+    }
+    .work-card {
+      grid-column: span 6;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, color-mix(in oklab, var(--surface) 88%, transparent), color-mix(in oklab, #0a0a12 92%, transparent));
+      border-radius: var(--radius);
+      overflow: clip;
+      position: relative;
+      transition: transform var(--t), border-color var(--t), box-shadow var(--t);
+    }
+    .work-card:hover { transform: translateY(-4px); border-color: color-mix(in oklab, var(--brand) 45%, var(--border)); box-shadow: var(--shadow); }
+    .work-media { aspect-ratio: 16/10; overflow: hidden; }
+    .work-media img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.02); transition: transform .9s cubic-bezier(.22,1,.36,1); }
+    .work-card:hover .work-media img { transform: scale(1.07); }
+    .work-meta { padding: 16px 16px 18px; display: grid; gap: 8px; }
+    .work-title { font-weight: 700; letter-spacing: .2px; font-size: 1.05rem; }
+    .work-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { font-size: .8rem; color: var(--muted); border: 1px dashed var(--border); padding: 4px 8px; border-radius: 999px; }
+    .work-link { position: absolute; inset: 0; }
+
+    /* Services */
+    .services-grid {
+      display: grid; gap: var(--gap);
+      grid-template-columns: repeat(12, 1fr);
+    }
+    .service {
+      grid-column: span 4; border: 1px solid var(--border); background: color-mix(in oklab, var(--surface) 86%, transparent); border-radius: var(--radius); padding: 22px; transition: border-color var(--t), transform var(--t);
+    }
+    .service:hover { border-color: color-mix(in oklab, var(--brand) 40%, var(--border)); transform: translateY(-2px); }
+    .service h3 { margin: 4px 0 8px; font-size: 1.05rem; }
+    .service p { margin: 0; color: var(--muted); }
+
+    /* About (intro) */
+    .about {
+      display: grid; gap: var(--gap); align-items: center;
+      grid-template-columns: repeat(12, 1fr);
+    }
+    .about .col { grid-column: span 6; }
+    .about .lead { color: var(--muted); font-size: clamp(1rem, 1.8vw, 1.1rem); }
+
+    /* Contact */
+    .contact {
+      display: grid; gap: var(--gap);
+      grid-template-columns: repeat(12, 1fr);
+    }
+    .contact .col { grid-column: span 6; }
+    .card {
+      border: 1px solid var(--border); background: color-mix(in oklab, var(--surface) 85%, transparent); border-radius: var(--radius); padding: 22px;
+    }
+    form { display: grid; gap: 12px; }
+    label { font-weight: 600; font-size: .95rem; }
+    input, textarea {
+      width: 100%; padding: 12px 14px; color: var(--text);
+      border: 1px solid var(--border); border-radius: 10px;
+      background: color-mix(in oklab, #0f0f16 92%, transparent);
+    }
+    textarea { min-height: 120px; resize: vertical; }
+    .btn--full { width: 100%; }
+
+    /* Footer */
+    .footer { border-top: 1px solid var(--border); padding: 22px 0; color: var(--muted); font-size: .95rem; }
+
+    /* Reveal on scroll */
+    .reveal { opacity: 0; transform: translateY(14px); transition: opacity .7s var(--t), transform .7s var(--t); }
+    .reveal.in-view { opacity: 1; transform: translateY(0); }
+
+    /* Responsive */
+    @media (max-width: 1100px) {
+      .work-card, .service { grid-column: span 6; }
+    }
+    @media (max-width: 700px) {
+      .about .col, .contact .col, .work-card, .service { grid-column: 1 / -1; }
+      .hero__cta { grid-auto-flow: row; }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container nav" role="navigation" aria-label="Main">
+      <a class="brand" href="index.html" aria-label="Home">
+        <span class="brand__name">BAUNFIRE</span>
+      </a>
+      <nav>
+        <button class="burger" id="burger" aria-label="Toggle menu" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+        <div class="nav__links" id="navLinks">
+          <a href="work.html">Work</a>
+          <a href="services.html">Services</a>
+          <a href="about.html">About</a>
+          <a href="letstalk.html" class="nav__cta">Contact</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero section container" id="top">
+      <div class="hero__inner reveal">
+        <div class="eyebrow"><span class="dot" aria-hidden="true"> CASE STUDIES</span> </div>
+        <h1>Some of  our finest work</h1>
+        <p>Solving diverse business needs through great design and UX.</p>
+        
+      </div>
+    </section>
+
+    <!-- Work -->
+    <section class="section container" id="work" style="scroll-margin-top: calc(var(--header-h) + 12px);">
+      
+      <!-- Grid -->
+      <div class="work-grid" id="grid">
+        <!-- Card 1 -->
+        <article class="work-card reveal" data-cats="web ecommerce">
+          <a class="work-link" href="#" aria-label="Project Alpha"></a>
+          <div class="work-media">
+            <img
+              src="https://images.ctfassets.net/eqb1x10m46e1/21qXq3so5DVxpNNIweu3T9/f249f25a589de3f784bb9b4ec0930cc6/Baunfire-Karat-Website-Case-Study_00_-_Thumbnail_-_840x1122.png?w=840&h=1122&q=90&fm=webp"
+              sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
+              alt="Responsive web project preview"
+              loading="lazy" decoding="async">
+          </div>
+          <div class="work-meta">
+            <div class="work-title">Karat</div>
+            <div class="work-tags"><span class="tag">corporate website</span></div>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="work-card reveal" data-cats="brand strategy">
+          <a class="work-link" href="#" aria-label="Brand System Beta"></a>
+          <div class="work-media">
+            <img
+              src="https://images.ctfassets.net/eqb1x10m46e1/nm7J0zTD3MXQP0ggtciwJ/160c0a27b79db1a5a9348c5647c6c290/01U_Baunfire_Case_Study_Cellares_Website_Thumbnail.png?w=1680&h=2244&q=90&fm=webp"
+              sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
+              alt="Brand identity mockups"
+              loading="lazy" decoding="async">
+          </div>
+          <div class="work-meta">
+            <div class="work-title">Cellares</div>
+            <div class="work-tags"><span class="tag">corporate website</span></div>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="work-card reveal" data-cats="web strategy">
+          <a class="work-link" href="#" aria-label="UX Transformation Gamma"></a>
+          <div class="work-media">
+            <img
+              src="https://images.ctfassets.net/eqb1x10m46e1/7lfORZnDawbgHbpBDKApA3/4eb2ae12c4e443ea7a96a4d84f49e5da/Baunfire_Case_Study_-_Lumana_-_00_-_Thumbnail_-_840x1122-A__1_.png?w=1680&h=2244&q=90&fm=webp"
+              sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
+              alt="UX transformation dashboard screens"
+              loading="lazy" decoding="async">
+          </div>
+          <div class="work-meta">
+            <div class="work-title">Lumana</div>
+            <div class="work-tags"><span class="tag">corporate website</span></div>
+          </div>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="work-card reveal" data-cats="ecommerce brand">
+          <a class="work-link" href="#" aria-label="Storefront Delta"></a>
+          <div class="work-media">
+            <img
+              src="https://images.ctfassets.net/eqb1x10m46e1/7fzu9TTuBamA12tf8vPOzt/73cbedcb9d3e7069daabc9a2f3fa6187/Baunfire_Case_Study_-_Ambi_Robotics_-_Thumbnail_Image.png?w=1680&h=2244&q=90&fm=webp"
+              sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
+              alt="eCommerce product grid"
+              loading="lazy" decoding="async">
+          </div>
+          <div class="work-meta">
+            <div class="work-title">Ambi Robotics</div>
+            <div class="work-tags"><span class="tag">corporate website</span></div>
+          </div>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="work-card reveal" data-cats="web">
+          <a class="work-link" href="#" aria-label="Marketing Site Epsilon"></a>
+          <div class="work-media">
+            <img
+              src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=60"
+              srcset="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=480&q=60 480w,
+                      https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=768&q=60 768w,
+                      https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=60 1200w"
+              sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
+              alt="Marketing website layout"
+              loading="lazy" decoding="async">
+          </div>
+          <div class="work-meta">
+            <div class="work-title">Marketing Site Epsilon</div>
+            <div class="work-tags"><span class="tag">Web</span></div>
+          </div>
+        </article>
+
+        <!-- Card 6 -->
+        <article class="work-card reveal" data-cats="brand">
+          <a class="work-link" href="#" aria-label="Identity Zeta"></a>
+          <div class="work-media">
+            <img
+              src="https://images.ctfassets.net/eqb1x10m46e1/1R7jpiDnBn38GYO41ZDDKW/c634cb8d81748991a538503411fc402d/Baunfire_SV1.gif?w=840&h=1122&q=90&fm=webp"
+              sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
+              alt="Visual identity stationery"
+              loading="lazy" decoding="async">
+          </div>
+          <div class="work-meta">
+            <div class="work-title">Silicon Valley</div>
+            <div class="work-tags"><span class="tag">Brand</span></div>
+          </div>
+        </article>
+
+        <!-- Card 7 -->
+        <article class="work-card reveal" data-cats="strategy">
+          <a class="work-link" href="#" aria-label="Product Strategy Eta"></a>
+          <div class="work-media">
+            <img
+              src="https://images.unsplash.com/photo-1522071901873-411886a10004?auto=format&fit=crop&w=900&q=60"
+              srcset="https://images.unsplash.com/photo-1522071901873-411886a10004?auto=format&fit=crop&w=480&q=60 480w,
+                      https://images.unsplash.com/photo-1522071901873-411886a10004?auto=format&fit=crop&w=768&q=60 768w,
+                      https://images.unsplash.com/photo-1522071901873-411886a10004?auto=format&fit=crop&w=1200&q=60 1200w"
+              sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
+              alt="Workshop and strategy session"
+              loading="lazy" decoding="async">
+          </div>
+          <div class="work-meta">
+            <div class="work-title">Product Strategy Eta</div>
+            <div class="work-tags"><span class="tag">Strategy</span></div>
+          </div>
+        </article>
+
+        <!-- Card 8 -->
+        <article class="work-card reveal" data-cats="ecommerce web">
+          <a class="work-link" href="#" aria-label="Checkout Optimizations Theta"></a>
+          <div class="work-media">
+            <img
+              src="https://images.unsplash.com/photo-1517433456452-f9633a875f6f?auto=format&fit=crop&w=900&q=60"
+              srcset="https://images.unsplash.com/photo-1517433456452-f9633a875f6f?auto=format&fit=crop&w=480&q=60 480w,
+                      https://images.unsplash.com/photo-1517433456452-f9633a875f6f?auto=format&fit=crop&w=768&q=60 768w,
+                      https://images.unsplash.com/photo-1517433456452-f9633a875f6f?auto=format&fit=crop&w=1200&q=60 1200w"
+              sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw"
+              alt="Checkout flow UI"
+              loading="lazy" decoding="async">
+          </div>
+          <div class="work-meta">
+            <div class="work-title">Checkout Optimizations Theta</div>
+            <div class="work-tags"><span class="tag">eCommerce</span><span class="tag">Web</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+    <!-- Contact -->
+    <section class="section container" id="contact" style="scroll-margin-top: calc(var(--header-h) + 12px);">
+      <h2 class="reveal">Let’s build something great</h2>
+      <div class="contact">
+        <div class="col reveal">
+          <div class="card">
+            <h3>Contact Details</h3>
+            <p class="muted">
+              GET IN TOUCH<br>
+              <br>
+              (408) 899 9889<br>
+              hello@baunfire.com
+            </p>
+          </div>
+        </div>
+        <div class="col reveal">
+          <div class="card">
+            <h3>Project Inquiry</h3>
+            <form action="#" method="post">
+              <div>
+                <label for="name">Name</label>
+                <input id="name" name="name" type="text" placeholder="Jane Doe" required>
+              </div>
+              <div>
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="jane@company.com" required>
+              </div>
+              <div>
+                <label for="company">Company</label>
+                <input id="company" name="company" type="text" placeholder="Company Inc.">
+              </div>
+              <div>
+                <label for="message">Project Details</label>
+                <textarea id="message" name="message" placeholder="Tell us about your goals, scope, and timeline." required></textarea>
+              </div>
+              <button class="btn btn--brand btn--full" type="submit">Send Message</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <noscript><div class="container" style="color:#ffb4a4; padding:12px 0;">This site works best with JavaScript enabled. Content is still accessible.</div></noscript>
+
+  <script type="module">
+    // Mobile nav
+    const burger = document.getElementById('burger');
+    const navLinks = document.getElementById('navLinks');
+    burger?.addEventListener('click', () => {
+      const expanded = burger.getAttribute('aria-expanded') === 'true';
+      burger.setAttribute('aria-expanded', String(!expanded));
+      navLinks.classList.toggle('open');
+    });
+
+    // Close mobile nav when a link is clicked
+    navLinks?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      navLinks.classList.remove('open'); burger.setAttribute('aria-expanded','false');
+    }));
+
+    // Filters
+    const filterButtons = document.querySelectorAll('.filter');
+    const cards = document.querySelectorAll('.work-card');
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.setAttribute('aria-pressed','false'));
+        btn.setAttribute('aria-pressed','true');
+        const cat = btn.dataset.filter;
+        cards.forEach(card => {
+          const cats = (card.dataset.cats || '').split(' ');
+          const show = cat === 'all' || cats.includes(cat);
+          card.style.display = show ? '' : 'none';
+        });
+      });
+    });
+
+    // Reveal on scroll
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!prefersReduced && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('in-view');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    } else {
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));
+    }
+
+    // Current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

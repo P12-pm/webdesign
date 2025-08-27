@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baunfire - Digital Creative Studio</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- Google Fonts: Poppins for a modern, clean look -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+    --primary-color: #2b2f34; /* A bright accent color */
+    --dark-bg: #0a0a0a;
+    --secondary-bg: #1a1a1a;
+    --text-light: #f8f9fa;
+    --text-muted: #adb5bd;
+    --border-color: #343a40;
+    --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--dark-bg);
+    color: var(--text-light);
+    overflow-x: hidden;
+    background-image: url();
+}
+
+/* --- Navigation Bar --- */
+.navbar {
+    background: rgba(10, 10, 10, 0.8);
+    backdrop-filter: blur(10px);
+    transition: var(--transition);
+    padding: 1rem 0;
+}
+
+.navbar.scrolled {
+    background: var(--dark-bg);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--text-light) !important;
+}
+
+.nav-link {
+    color: var(--text-muted) !important;
+    font-weight: 500;
+    margin: 0 0.75rem;
+    transition: var(--transition);
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--text-light) !important;
+}
+
+.btn-cta {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.btn-cta:hover {
+    background-color: #b33449;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 123, 255, 0.2);
+}
+
+/* --- Hero Section --- */
+.hero-section {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    overflow: hidden;
+    background-color: #1c1c1c;
+    background-image: url('https://static.vecteezy.com/system/resources/previews/007/278/150/non_2x/dark-background-abstract-with-light-effect-vector.jpg');
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: -1;
+}
+
+.hero-content h1 {
+    font-size: 4.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+.hero-content p {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .hero-content h1 { font-size: 2.8rem; }
+    .hero-content p { font-size: 1.1rem; }
+}
+
+/* --- Section Styling --- */
+.section {
+    padding: 120px 0;
+    background-color: #ffffff;
+}
+
+.section-title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-decoration: #111318;
+}
+
+.section-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin-bottom: 4rem;
+    text-decoration: #111318;
+}
+
+/* --- Featured Work / Portfolio Section --- */
+.project-card {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    background: var(--secondary-bg);
+    box-shadow: 0 10px 40px rgb(19, 19, 19);
+    transition: var(--transition);
+}
+
+.project-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgb(44, 43, 43);
+}
+
+.project-card img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+}
+
+.project-card:hover img {
+    transform: scale(1.05);
+}
+
+.project-info {
+    padding: 1.5rem;
+}
+
+.project-info h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.project-info p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* --- Services Section --- */
+.service-item {
+    background: var(--secondary-bg);
+    
+    text-align: center;
+    transition: var(--transition);
+    height: 100%;
+    width: 100%;
+    image-orientation: ;
+    
+}
+
+img{
+    width: 300px;
+    height: 200px;
+    
+}
+
+.p {
+    text-decoration-color: #f8f9fa;
+}
+
+.service-item:hover {
+    background: #222;
+    border-color: var(--primary-color);
+}
+
+.service-icon {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+}
+
+/* --- About Section --- */
+.about-text p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+/* --- Call to Action Section --- */
+.cta-section {
+    background-color: var(--secondary-bg);
+    border-radius: 20px;
+    padding: 5rem 3rem;
+}
+
+/* --- Footer --- */
+/* Footer */
+.footer {
+    padding: 120px 0 60px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 80px;
+    margin-bottom: 60px;
+}
+
+.footer-logo {
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.footer-tagline {
+    font-size: 16px;
+    opacity: 0.8;
+    margin-bottom: 40px;
+}
+
+.footer-social {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-title {
+    font-size: 14px;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+
+.footer-email,
+.footer-phone,
+.footer-link {
+    display: block;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    margin-bottom: 15px;
+    transition: opacity 0.3s ease;
+}
+
+.footer-email:hover,
+.footer-phone:hover,
+.footer-link:hover {
+    opacity: 0.7;
+}
+
+.footer-address {
+    font-size: 14px;
+    opacity: 0.6;
+    text-align: center;
+    padding-top: 60px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* --- Scroll Reveal Animation --- */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.wwd{
+    position: relative;
+    min-height: 100vh;
+    display: grid;
+    align-items: center;
+    overflow: hidden;
+    padding: 6rem 7vw;
+    background-color: #ffffff;
+  }
+
+  /* Eyebrow label */
+  .eyebrow{
+    position: absolute;
+    top: clamp(1.5rem, 5vw, 4rem);
+    left: 7vw;
+    margin: 0;
+    font-size: .85rem;
+    letter-spacing: .5em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: #121417;
+  }
+
+  /* Layout: visual + content */
+  .grid{
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 6rem);
+    align-items: center;
+    z-index: 1; /* above the giant word */
+  }
+
+  /* Diamond image */
+  .diamond{
+    width: min(44vw, 350px);
+    aspect-ratio: 1 / 1;
+    margin: 0 auto;
+    transform: rotate(45deg);
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.15);
+  }
+  .diamond img{
+    width: 120%;
+    height: 120%;
+    object-fit: cover;
+    transform: rotate(-45deg) translate(-8%, -2%);
+    /* Prevent blurriness during transform on some browsers */
+    will-change: transform;
+    display: block;
+  }
+
+  /* Copy block */
+  .copy{
+    max-width: 560px;
+    margin-left: auto;
+  }
+  .copy p{
+    font-size: clamp(1rem, 1.2vw + .6rem, 1.25rem);
+    line-height: 1.9;
+    color: var(--muted);
+    margin: 0 0 2rem 0;
+  }
+
+  /* CTA */
+  .cta{
+    display: inline-flex;
+    align-items: center;
+    gap: .9rem;
+    background: transparent;
+    border: none;
+    padding: 0;
+    font-weight: 700;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: #111318;
+  }
+  .cta .dot{
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--cta-bg);
+    display: grid;
+    place-items: center;
+    font-size: 1.25rem;
+    color: #111318;
+  }
+  .cta span.label{
+    font-size: .85rem;
+    font-style: var(--text-light);
+    color: aliceblue;
+  }
+  .cta:hover .dot{
+    filter: brightness(.95);
+  }
+
+  /* Subtle bottom scroll indicator */
+  .scroll-indicator{
+    position: absolute;
+    left: 50%;
+    bottom: 2.5rem;
+    transform: translateX(-50%);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid #e5e7eb;
+    opacity: .8;
+  }
+
+  /* Responsive */
+  @media (max-width: 980px){
+    .grid{
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    .copy{ margin: 0 auto; text-align: left; }
+    .wwd::after{
+      left: -10vw;
+      transform: translateY(-20%);
+      font-size: 40vw;
+    }
+    .eyebrow{ left: 7vw; }
+    .diamond{ width: min(70vw, 300px); }
+  }
+
+  .blog-card {
+    background: rgb(46, 38, 38);
+    padding: 2rem;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.blog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.blog-category {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.contact .cols{
+      display:grid; grid-template-columns: .9fr 1.1fr; gap:24px;
+    }
+    @media (max-width: 900px){ .contact .cols{ grid-template-columns:1fr } }
+    .contact .details{
+      background:var(--surface); border:1px solid rgba(255,255,255,.08);
+      border-radius:16px; padding:18px;
+    }
+    .stack{ display:flex; flex-direction:column; gap:12px; }
+    .stack a{ color:var(--text) }
+    .contact form{
+      background:var(--surface); border:1px solid rgba(255,255,255,.08);
+      border-radius:16px; padding:18px; display:grid; grid-template-columns:1fr 1fr; gap:12px;
+    }
+    .contact form .full{ grid-column:1 / -1 }
+    label{ font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted) }
+    input, textarea{
+      margin-top:6px; width:100%; padding:12px 12px; border-radius:10px;
+      border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.03); color:var(--text);
+      font-size:14px;
+    }
+    textarea{ min-height:120px; resize:vertical }
+    .note{ color:var(--muted); font-size:12px }
+    .form-actions{ display:flex; justify-content:flex-end; gap:12px; }
+    .success{ color:#86f3c0; display:none }
+    .error{ color:var(--danger); display:none }
+
+    .about {
+    background-color: #cd2121;
+    padding: 120px 0;
+    text-align: center;
+    border-top: 1px solid rgba(219, 27, 27, 0.766);
+}
+
+.section-title-large {
+    font-size: clamp(50px, 6vw, 100px);
+    font-weight: 300;
+    letter-spacing: 8px;
+    margin-bottom: 60px;
+    line-height: 1.1;
+}
+
+.about-description {
+    font-size: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+    opacity: 0.9;
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#home">BAUNFIRE</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link active" href="work.html">Work</a></li>
+                    <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                </ul>
+                <a href="letstalk.html" class="btn btn-cta ms-lg-3">Let's Talk</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container text-white">
+            <div class="hero-content fade-in-up">
+                <h1>A Digital Agency Focused on Web.</h1><br><br>
+                <p class="mt-4">We are a creative team of designers, developers, strategists, and producers building elevated websites in the heart of Silicon Valley.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Work Section -->
+    <section id="work" class="section">
+        <div class="container">
+            <div class="text-center" style="color: black; font-size: 40px; font-weight: bold;">Featured Work</h2>
+                <p class="section-subtitle fade-in-up" style="color: black;">Explore some of our latest website projects.</p>
+            </div>
+            <div class="row">
+                <!-- Project 1 -->
+                <div class="col-lg-6">
+                    <div class="project-card fade-in-up">
+                        <a href="karat.html">
+                            <img src="https://images.ctfassets.net/eqb1x10m46e1/21qXq3so5DVxpNNIweu3T9/f249f25a589de3f784bb9b4ec0930cc6/Baunfire-Karat-Website-Case-Study_00_-_Thumbnail_-_840x1122.png?w=840&h=1122&q=90&fm=webp" alt="Project 1">
+                        </a>
+                        <div class="project-info">
+                            <h3>Karat</h3>
+                            <p>corporate website</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project 2 -->
+                <div class="col-lg-6">
+                    <div class="project-card fade-in-up">
+                        <a href="cellares.html">
+                            <img src="https://images.ctfassets.net/eqb1x10m46e1/nm7J0zTD3MXQP0ggtciwJ/160c0a27b79db1a5a9348c5647c6c290/01U_Baunfire_Case_Study_Cellares_Website_Thumbnail.png?w=1120&h=1496&q=90&fm=webp" alt="Project 2">
+                        </a>
+                        <div class="project-info">
+                            <h3>Cellares</h3>
+                            <p>corporate website</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project 3 -->
+                <div class="col-lg-6">
+                    <div class="project-card fade-in-up">
+                        <a href="lumana.html">
+                            <img src="https://images.ctfassets.net/eqb1x10m46e1/7lfORZnDawbgHbpBDKApA3/4eb2ae12c4e443ea7a96a4d84f49e5da/Baunfire_Case_Study_-_Lumana_-_00_-_Thumbnail_-_840x1122-A__1_.png?w=1120&h=1496&q=90&fm=webp" alt="Project 3">
+                        </a>
+                        <div class="project-info">
+                            <h3>Lumana</h3>
+                            <p>corporate website</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project 4 -->
+                <div class="col-lg-6">
+                    <div class="project-card fade-in-up">
+                        <a href="ambi.html">
+                            <img src="https://images.ctfassets.net/eqb1x10m46e1/7fzu9TTuBamA12tf8vPOzt/73cbedcb9d3e7069daabc9a2f3fa6187/Baunfire_Case_Study_-_Ambi_Robotics_-_Thumbnail_Image.png?w=1120&h=1496&q=90&fm=webp" alt="Project 4">
+                        </a>
+                        <div class="project-info">
+                            <h3>Ambi Robotics</h3>
+                            <p>corporate website</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+   
+<section class="wwd">
+    <h6 class="eyebrow" style="color: black;">What We Do</h6>
+  
+    <div class="grid">
+      <!-- Visual -->
+      <div>
+        <div class="diamond">
+          <img src="https://images.ctfassets.net/eqb1x10m46e1/5qJHca0PkOlHe4bWqkYC02/9ad6bc65f63d2b0e9b575f6c496e8c2e/Baunfire-ContentMag-09.jpg" alt="Team at work">
+        </div>
+      </div>
+  
+      <!-- Content -->
+      <div class="copy">
+        <p style="color: black;">We build impactful experiences through great UX, design, and development.</p>
+        <button class="cta" aria-label="View our services">
+          <span class="dot">+</span>
+          <a href="services.html"><apan class="label">View our services +</span></a>
+        </button>
+      </div>
+    </div>
+    <div class="grid">
+        <!-- Visual -->
+        <div>
+          <div class="diamond">
+            <!-- Replace the src with your image -->
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRy2DRmLciMYESB2NqHxBjrazV8aOK4xhp7sGPMjxEZrDhQYL7eN8oLsv-mXfxjKLzYPlY&usqp=CAU" alt="Team at work">
+          </div>
+        </div>
+    
+        <!-- Content -->
+        <div class="copy">
+          <p style="color: black;">We design visually-engaging marketing assets to help drive your brand forward.</p>
+          <button class="cta" aria-label="View our services">
+            <span class="dot">+</span>
+            <a href="services.html"><apan class="label">View our services +</span></a>
+          </button>
+        </div>
+      </div>
+      <div class="grid">
+        <!-- Visual -->
+        <div>
+          <div class="diamond">
+            <!-- Replace the src with your image -->
+            <img src="https://images.ctfassets.net/eqb1x10m46e1/0178RMx9rkde7xTAtuYNfZ/1de3f3dac7cd03c29a749862202af379/Baunfire-ContentMag-11.jpg" alt="Team at work">
+          </div>
+        </div>
+    
+        <!-- Content -->
+        <div class="copy">
+          <p style="color: black;">We identify business challenges and develop solutions to achieve your goals.</p>
+          <button class="cta" aria-label="View our services">
+            <span class="dot">+</span>
+            <a href="services.html"><apan class="label">View our services +</span></a>
+          </button>
+        </div>
+      </div>
+  
+    <div class="scroll-indicator" aria-hidden="true"></div>
+  </section>
+
+    <section id="about" class="about">
+            <div class="container">
+                <h2 class="section-title-large">
+                    A DIGITAL AGENCY
+                </h2>
+                
+                <p class="about-description">
+                    We are a web design and development company, building websites that drive traffic, engagement, and conversion for industry-leading brands and startups in Silicon Valley.
+                </p>
+            </div>
+        </section>
+
+    <section class="insights py-5 bg-light">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-12">
+                    <h2 class="section-title display-4 fw-bold mb-3 " style="color: black;">Latest Insights</h2>
+                    <p class="section-subtitle">Our thoughts and perspectives on digital.</p>
+                </div>
+            </div>
+            
+            <div class="row g-4" style="background-color: white;">
+                <div class="col-md-4" style="color: white;">
+                    <article class="blog-card h-100" style="background-color: whitesmoke;">
+                        <div class="blog-category text-primary mb-2" style="color: rgb(0, 0, 0);">SEO & Digital Marketing</div>
+                        <h3 class="blog-title h5 mb-3" style="color: rgb(0, 0, 0);">
+                            Where AI Meets Growth: Future-Ready Marketing for B2B Companies
+                        </h3>
+                        <a href="blog.html" class="text-decoration-none" style="color: rgb(48, 10, 10);">Read More →</a>
+                    </article>
+                </div>
+                
+                <div class="col-md-4">
+                    <article class="blog-card h-100" style="background-color: whitesmoke;">
+                        <div class="blog-category text-primary mb-2" style="color: rgb(0, 0, 0);">Web & Digital Design</div>
+                        <h3 class="blog-title h5 mb-3" style="color: rgb(0, 0, 0);">
+                            Designing High-Intent Journeys: Conversion Rate Optimization for Modern B2B Brands
+                        </h3>
+                        <a href="blog.html" class="text-decoration-none" style="color: rgb(0, 0, 0);">Read More →</a>
+                    </article>
+                </div>
+                
+                <div class="col-md-4">
+                    <article class="blog-card h-100" style="background-color: whitesmoke;">
+                        <div class="blog-category text-primary mb-2" style="color: black;">Web & Digital Design</div>
+                        <h3 class="blog-title h5 mb-3" style="color: rgb(0, 0, 0);">
+                            Crafting a Memorable Web Experience for Your Users
+                        </h3>
+                        <a href="blog.html" class="text-decoration-none" style="color: rgb(0, 0, 0);">Read More →</a>
+                    </article>
+                </div>
+                <a href="blog1.html"><apan class="label">View more insights +</span></a>
+            </div>
+        </div>
+    </section>
+
+     <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">BAUNFIRE</div>
+                    <p class="footer-tagline">Making great things in Silicon Valley.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link">LinkedIn</a>
+                        <a href="#" class="social-link">Instagram</a>
+                        <a href="#" class="social-link">Twitter</a>
+                        <a href="#" class="social-link">Dribbble</a>
+                    </div>
+                </div>
+                
+                <div class="footer-contact">
+                    <h3 class="footer-title">GET IN TOUCH</h3>
+                    <a href="/cdn-cgi/l/email-protection#4028252c2c2f002221352e262932256e232f2d" class="footer-email"><span class="__cf_email__" data-cfemail="7018151c1c1f301211051e161902155e131f1d">hello@baunfire.com</span></a>
+                    <a href="tel:4088998998" class="footer-phone">(408) 899-8998</a>
+                </div>
+                
+                <div class="footer-nav">
+                    <h3 class="footer-title">EXPLORE</h3>
+                    <a href="work.html" class="footer-link">Work</a>
+                    <a href="services.html" class="footer-link">Services</a>
+                    <a href="about.html" class="footer-link">About</a>
+                    <a href="letstalk.html" class="footer-link">Contact</a>
+                </div>
+            </div>
+            
+            <div class="footer-address">
+                75 E Santa Clara St, Ste 1425 San Jose, California 95113
+            </div>
+        </div>
+    </footer>
+         
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const nav = document.querySelector('.navbar');
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        nav.classList.add('scrolled');
+    } else {
+        nav.classList.remove('scrolled');
+    }
+});
+
+// --- Active nav link on scroll ---
+const sections = document.querySelectorAll('section');
+const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (pageYOffset >= sectionTop - 150) {
+            current = section.getAttribute('id');
+        }
+    });
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href').includes(current)) {
+            link.classList.add('active');
+        }
+    });
+});
+
+// --- Fade-in animation on scroll ---
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, {
+    threshold: 0.1 
+});
+
+document.querySelectorAll('.fade-in-up').forEach(el => {
+    observer.observe(el);
+});
+    </script>
+</body>
+</html>
